@@ -35,6 +35,12 @@ public class JwtAuthenticationFilter
             FilterChain filterChain)
             throws ServletException, IOException {
 
+        // Allow CORS preflight requests to pass through
+        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader =
                 request.getHeader("Authorization");
 
