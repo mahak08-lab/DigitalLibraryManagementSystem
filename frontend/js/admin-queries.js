@@ -1,5 +1,5 @@
 
-const API_BASE_URL = "http://digitallibrarymanagementsystem-production-a092.up.railway.app";
+const API_BASE_URL = "https://digitallibrarymanagementsystem-production-a092.up.railway.app";
 
 document.addEventListener("DOMContentLoaded", function () {
     loadQueries();
