@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Manage books in the Digital Library Management System.">
+
+    <meta name="author"
+          content="Digital Library Management System">
+
+    <title>Manage Books | Digital Library</title>
+
+
+    <!-- Google Font -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <!-- Main Project CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body class="admin-books-page">
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <nav class="admin-books-navbar">
+
+        <div class="container">
+
+            <!-- BRAND -->
+
+            <a href="admin-dashboard.html"
+               class="admin-books-brand">
+
+                <i class="bi bi-book-half"></i>
+
+                <span>Digital Library</span>
+
+            </a>
+
+
+            <!-- DASHBOARD -->
+
+            <a href="admin-dashboard.html"
+               class="admin-books-dashboard-btn">
+
+                <i class="bi bi-arrow-left"></i>
+
+                <span>Dashboard</span>
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="admin-books-main">
+
+        <div class="container">
+
+
+            <!-- =================================================
+                 PAGE HEADER
+            ================================================== -->
+
+            <section class="admin-books-header">
+
+                <div>
+
+                    <!-- LABEL -->
+
+                    <div class="admin-books-label">
+
+                        <i class="bi bi-bookshelf"></i>
+
+                        LIBRARY MANAGEMENT
+
+                    </div>
+
+
+                    <!-- TITLE -->
+
+                   
+
+                    <h1 class="admin-books-title">
+
+                        Manage Books
+
+                    </h1>
+
+
+                    <!-- SUBTITLE -->
+
+                    <p class="admin-books-subtitle">
+
+                        View and manage books available in the
+                        digital library.
+
+                    </p>
+
+                </div>
+
+
+                <!-- REFRESH BUTTON -->
+
+                <button
+                    type="button"
+                    class="admin-books-refresh-btn"
+                    onclick="loadBooks()">
+
+                    <i class="bi bi-arrow-clockwise"></i>
+
+                    Refresh
+
+                </button>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BOOK TABLE CARD
+            ================================================== -->
+
+            <section class="admin-books-table-card">
+
+
+                <!-- CARD HEADER -->
+
+                <div class="admin-books-card-header">
+
+                    <div>
+
+                        <h2 class="admin-books-card-title">
+
+                            <i class="bi bi-collection"></i>
+
+                            Library Books
+
+                        </h2>
+
+
+                        <p class="admin-books-card-description">
+
+                            Manage book information, availability
+                            and inventory.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TABLE
+                ================================================== -->
+
+                <div class="table-responsive">
+
+                    <table
+                        class="table admin-books-table align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>Book</th>
+
+                                <th>Author</th>
+
+                                <th>Category</th>
+
+                                <th>ISBN</th>
+
+                                <th>Quantity</th>
+
+                                <th class="text-center">
+
+                                    Actions
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="booksTableBody">
+
+
+                            <!-- LOADING -->
+
+                            <tr id="loadingRow">
+
+                                <td colspan="7">
+
+                                    <div class="admin-books-loading">
+
+                                        <div
+                                            class="spinner-border text-primary mb-3"
+                                            role="status">
+
+                                            <span
+                                                class="visually-hidden">
+
+                                                Loading...
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <div>
+
+                                            Loading books...
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         EDIT BOOK MODAL
+    ====================================================== -->
+
+    <div
+        class="modal fade"
+        id="editBookModal"
+        tabindex="-1"
+        aria-labelledby="editBookModalLabel"
+        aria-hidden="true">
+
+
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+
+
+            <div class="modal-content admin-books-modal">
+
+
+                <!-- MODAL HEADER -->
+
+                <div class="modal-header admin-books-modal-header">
+
+                    <div>
+
+                        <div class="admin-books-modal-label">
+
+                            <i class="bi bi-pencil-square"></i>
+
+                            BOOK MANAGEMENT
+
+                        </div>
+
+
+                        <h5
+                            class="modal-title"
+                            id="editBookModalLabel">
+
+                            Edit Book
+
+                        </h5>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- MODAL BODY -->
+
+                <div class="modal-body admin-books-modal-body">
+
+
+                    <form id="editBookForm">
+
+
+                        <!-- HIDDEN BOOK ID -->
+
+                        <input
+                            type="hidden"
+                            id="editBookId">
+
+
+
+                        <div class="row g-4">
+
+
+                            <!-- TITLE -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="editTitle"
+                                    class="form-label">
+
+                                    <i class="bi bi-book me-1"></i>
+
+                                    Book Title
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    id="editTitle"
+                                    class="form-control"
+                                    placeholder="Enter book title"
+                                    required>
+
+                            </div>
+
+
+
+                            <!-- AUTHOR -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="editAuthor"
+                                    class="form-label">
+
+                                    <i class="bi bi-person me-1"></i>
+
+                                    Author
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    id="editAuthor"
+                                    class="form-control"
+                                    placeholder="Enter author name"
+                                    required>
+
+                            </div>
+
+
+
+                            <!-- ISBN -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="editIsbn"
+                                    class="form-label">
+
+                                    <i class="bi bi-upc-scan me-1"></i>
+
+                                    ISBN
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    id="editIsbn"
+                                    class="form-control"
+                                    placeholder="Enter ISBN"
+                                    required>
+
+                            </div>
+
+
+
+                            <!-- CATEGORY -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="editCategory"
+                                    class="form-label">
+
+                                    <i class="bi bi-grid me-1"></i>
+
+                                    Category
+
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    id="editCategory"
+                                    class="form-control"
+                                    placeholder="Enter category"
+                                    required>
+
+                            </div>
+
+
+
+                            <!-- QUANTITY -->
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="editQuantity"
+                                    class="form-label">
+
+                                    <i class="bi bi-stack me-1"></i>
+
+                                    Quantity
+
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    id="editQuantity"
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="Enter quantity"
+                                    required>
+
+
+                                <div class="form-text">
+
+                                    Set quantity to 0 to mark the
+                                    book as unavailable.
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ERROR -->
+
+                        <div
+                            id="editError"
+                            class="alert alert-danger mt-4 d-none">
+
+                        </div>
+
+
+
+                        <!-- SUCCESS -->
+
+                        <div
+                            id="editSuccess"
+                            class="alert alert-success mt-4 d-none">
+
+                        </div>
+
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="admin-books-modal-actions">
+
+
+                            <button
+                                type="button"
+                                class="btn admin-books-cancel-btn"
+                                data-bs-dismiss="modal">
+
+                                Cancel
+
+                            </button>
+
+
+                            <button
+                                type="submit"
+                                class="btn admin-books-save-btn"
+                                id="saveBookButton">
+
+                                <i class="bi bi-check-lg me-1"></i>
+
+                                Save Changes
+
+                            </button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="admin-books-footer">
+
+        <div class="container">
+
+            <div class="admin-books-footer-brand">
+
+                <i class="bi bi-book-half"></i>
+
+                Digital Library Management System
+
+            </div>
+
+
+            <div class="admin-books-footer-text">
+
+                © 2026 Digital Library.
+
+                All rights reserved.
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         BOOTSTRAP JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+
+    <!-- =====================================================
+         ADMIN BOOKS JAVASCRIPT
+         DO NOT CHANGE
+    ====================================================== -->
+
+    <script src="js/admin-books.js"></script>
+
+
+</body>
+
+</html>

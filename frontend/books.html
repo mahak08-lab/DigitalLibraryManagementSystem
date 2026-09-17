@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Explore and borrow books from the Digital Library Management System.">
+
+    <title>Library Catalogue - Digital Library</title>
+
+
+    <!-- =====================================================
+         GOOGLE FONT
+         ===================================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+
+    <!-- =====================================================
+         BOOTSTRAP
+         ===================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- =====================================================
+         BOOTSTRAP ICONS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+    <!-- =====================================================
+         PROJECT CSS
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/style.css">
+
+
+    <!-- =====================================================
+         PAGE-SPECIFIC CSS
+         ===================================================== -->
+
+    <style>
+
+        /* =====================================================
+           PAGE BASE
+           ===================================================== */
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f6f8fc;
+            color: #172033;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+           ===================================================== */
+
+        .library-navbar {
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 1px solid #e7eaf0;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+
+        .library-navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .library-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #172033;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .library-brand-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #0d6efd;
+            color: #ffffff;
+            font-size: 1.15rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 14px;
+            border-radius: 9px;
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: #eef4ff;
+            color: #0d6efd;
+        }
+
+
+        /* =====================================================
+           CATALOGUE HERO
+           ===================================================== */
+
+        .catalogue-hero {
+            position: relative;
+            padding: 78px 20px 72px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #071a35 0%,
+                    #0d2b52 55%,
+                    #123c6b 100%
+                );
+            overflow: hidden;
+        }
+
+        .catalogue-hero::before {
+            content: "";
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            top: -150px;
+            right: -80px;
+        }
+
+        .catalogue-hero::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(13, 110, 253, 0.12);
+            bottom: -120px;
+            left: -70px;
+        }
+
+        .catalogue-hero .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .catalogue-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 13px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 50px;
+            background: rgba(255,255,255,0.08);
+            color: #b9d7ff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+        }
+
+        .catalogue-title {
+            margin: 0 auto 15px;
+            color: #ffffff;
+            font-size: clamp(2.3rem, 5vw, 3.6rem);
+            line-height: 1.1;
+            font-weight: 800;
+        }
+
+        .catalogue-description {
+            max-width: 680px;
+            margin: 0 auto;
+            color: rgba(255,255,255,0.75);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           SEARCH SECTION
+           ===================================================== */
+
+        .search-section {
+            position: relative;
+            margin-top: -35px;
+            margin-bottom: 55px;
+            z-index: 10;
+        }
+
+        .search-card {
+            padding: 28px;
+            background: #ffffff;
+            border: 1px solid #e8ebf0;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(16, 24, 40, 0.09);
+        }
+
+        .form-label {
+            margin-bottom: 8px;
+            color: #263248;
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 50px;
+            padding: 10px 14px;
+            border: 1px solid #dfe4ec;
+            border-radius: 11px;
+            color: #172033;
+            background: #ffffff;
+            box-shadow: none;
+            transition: 0.2s ease;
+        }
+
+        .form-control::placeholder {
+            color: #9aa3b2;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+        }
+
+        .search-button {
+            min-height: 50px;
+            border: none;
+            border-radius: 11px;
+            font-weight: 700;
+            box-shadow: 0 7px 18px rgba(13, 110, 253, 0.2);
+            transition: 0.2s ease;
+        }
+
+        .search-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(13, 110, 253, 0.25);
+        }
+
+
+        /* =====================================================
+           BOOK SECTION HEADER
+           ===================================================== */
+
+        .books-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .books-heading-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .books-heading-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: #eaf2ff;
+            color: #0d6efd;
+            font-size: 1.1rem;
+        }
+
+        .books-title {
+            margin: 0;
+            color: #172033;
+            font-size: 1.45rem;
+            font-weight: 800;
+        }
+
+        .book-count {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 12px;
+            border-radius: 50px;
+            background: #eef2f7;
+            color: #647084;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           LOADING
+           ===================================================== */
+
+        #loading,
+        #loadingState {
+            display: none !important;
+        }
+
+
+        /* =====================================================
+           BOOK CARDS
+           ===================================================== */
+
+        #booksContainer {
+            min-height: 100px;
+        }
+
+        #booksContainer > div {
+            display: flex;
+        }
+
+        #booksContainer .card {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        .book-card,
+        #booksContainer .card {
+            background: #ffffff;
+            border: 1px solid #e8ebf0 !important;
+            border-radius: 17px !important;
+            overflow: hidden;
+            box-shadow: 0 5px 18px rgba(16, 24, 40, 0.045) !important;
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        #booksContainer .card:hover {
+            transform: translateY(-6px);
+            border-color: #d6e4ff !important;
+            box-shadow: 0 18px 38px rgba(16, 24, 40, 0.1) !important;
+        }
+
+        #booksContainer .card-body {
+            padding: 23px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #booksContainer .badge {
+            padding: 7px 10px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        #booksContainer .card-title {
+            min-height: 52px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            color: #172033;
+            font-size: 1.08rem;
+            line-height: 1.45;
+            font-weight: 750;
+        }
+
+        #booksContainer .card-text {
+            color: #687386;
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
+        #booksContainer .card-text strong {
+            color: #303b4e;
+            font-weight: 700;
+        }
+
+        #booksContainer .btn {
+            margin-top: auto;
+            min-height: 43px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           BETTER BOOTSTRAP BADGES
+           ===================================================== */
+
+        #booksContainer .bg-primary {
+            background: #eaf2ff !important;
+            color: #0d6efd !important;
+        }
+
+        #booksContainer .bg-success {
+            background: #eaf8f0 !important;
+            color: #16834d !important;
+        }
+
+        #booksContainer .bg-danger {
+            background: #fff0f0 !important;
+            color: #d13b3b !important;
+        }
+
+
+        /* =====================================================
+           ERROR / EMPTY STATES
+           ===================================================== */
+
+        #errorMessage {
+            border: none;
+            border-radius: 14px;
+        }
+
+        #booksContainer .alert {
+            border: 1px solid #e4e8ef;
+            border-radius: 15px;
+            padding: 30px 20px;
+            background: #ffffff;
+            color: #667085;
+        }
+
+
+        /* =====================================================
+           MODAL
+           ===================================================== */
+
+        #bookDetailsModal .modal-dialog {
+            max-width: 520px;
+        }
+
+        #bookDetailsModal .modal-content {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.2);
+        }
+
+        #bookDetailsModal .modal-header {
+            padding: 21px 24px;
+            background: #f8faff;
+            border-bottom: 1px solid #e9edf3;
+        }
+
+        #bookDetailsModal .modal-title {
+            color: #172033;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        #bookDetailsModal .modal-body {
+            padding: 26px 24px;
+        }
+
+        .detail-label {
+            margin-bottom: 5px;
+            color: #7a8495;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            padding: 11px 13px;
+            border-radius: 10px;
+            background: #f7f9fc;
+            color: #172033;
+            font-size: 0.92rem;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        #bookDetailsModal .modal-footer {
+            padding: 18px 24px;
+            border-top: 1px solid #e9edf3;
+        }
+
+        #bookDetailsModal .modal-footer .btn {
+            min-height: 42px;
+            border-radius: 9px;
+            padding: 9px 16px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .library-footer {
+            margin-top: 80px;
+            padding: 30px 0;
+            background: #ffffff;
+            border-top: 1px solid #e7eaf0;
+            color: #7a8495;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .library-footer .footer-brand {
+            margin-bottom: 5px;
+            color: #253047;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .catalogue-hero {
+                padding: 60px 20px 70px;
+            }
+
+            .catalogue-title {
+                font-size: 2.3rem;
+            }
+
+            .catalogue-description {
+                font-size: 0.95rem;
+            }
+
+            .search-section {
+                margin-top: -30px;
+                margin-bottom: 40px;
+            }
+
+            .search-card {
+                padding: 20px;
+            }
+
+            .books-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .books-title {
+                font-size: 1.3rem;
+            }
+
+        }
+
+
+        @media (max-width: 576px) {
+
+            .library-navbar {
+                padding: 12px 0;
+            }
+
+            .library-brand {
+                font-size: 1rem;
+            }
+
+            .library-brand-icon {
+                width: 38px;
+                height: 38px;
+            }
+
+            .back-link {
+                padding: 8px;
+                font-size: 0.8rem;
+            }
+
+            .back-link span {
+                display: none;
+            }
+
+            .catalogue-title {
+                font-size: 2rem;
+            }
+
+            .catalogue-label {
+                font-size: 0.68rem;
+            }
+
+            #booksContainer .card-body {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+     ========================================================= -->
+
+<nav class="navbar library-navbar">
+
+    <div class="container">
+
+        <!-- Brand -->
+
+        <a href="user-dashboard.html"
+           class="library-brand">
+
+            <span class="library-brand-icon">
+
+                <i class="bi bi-book-half"></i>
+
+            </span>
+
+            <span>
+                Digital Library
+            </span>
+
+        </a>
+
+
+        <!-- Dashboard -->
+
+        <a href="user-dashboard.html"
+           class="back-link">
+
+            <i class="bi bi-arrow-left"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================================================
+     CATALOGUE HERO
+     ========================================================= -->
+
+<section class="catalogue-hero">
+
+    <div class="container text-center">
+
+        <div class="catalogue-label">
+
+            <i class="bi bi-bookshelf"></i>
+
+            LIBRARY CATALOGUE
+
+        </div>
+
+
+        <h1 class="catalogue-title">
+
+            Explore Our Books
+
+        </h1>
+
+
+        <p class="catalogue-description">
+
+            Discover your next favorite book.
+            Search our catalogue by title, author
+            or category and start reading today.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     SEARCH SECTION
+     ========================================================= -->
+
+<section class="search-section">
+
+    <div class="container">
+
+        <div class="search-card">
+
+            <div class="row g-3 align-items-end">
+
+
+                <!-- Search -->
+
+                <div class="col-lg-6">
+
+                    <label for="searchInput"
+                           class="form-label">
+
+                        <i class="bi bi-search me-1"></i>
+
+                        Search Books
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="form-control"
+                        placeholder="Search by title or author"
+                        autocomplete="off">
+
+                </div>
+
+
+                <!-- Category -->
+
+                <div class="col-lg-4">
+
+                    <label for="categorySelect"
+                           class="form-label">
+
+                        <i class="bi bi-grid me-1"></i>
+
+                        Category
+
+                    </label>
+
+
+                    <select
+                        id="categorySelect"
+                        class="form-select">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Search Button -->
+
+                <div class="col-lg-2">
+
+                    <button
+                        type="button"
+                        id="searchButton"
+                        class="btn btn-primary w-100 search-button">
+
+                        <i class="bi bi-search me-1"></i>
+
+                        Search
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     BOOKS SECTION
+     ========================================================= -->
+
+<section class="pb-5">
+
+    <div class="container">
+
+
+        <!-- Books Header -->
+
+        <div class="books-header">
+
+            <div class="books-heading-wrapper">
+
+                <div class="books-heading-icon">
+
+                    <i class="bi bi-collection"></i>
+
+                </div>
+
+                <h2 class="books-title">
+
+                    Available Books
+
+                </h2>
+
+            </div>
+
+
+            <span
+                id="bookCount"
+                class="book-count">
+
+                0 book(s) found
+
+            </span>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LOADING
+             ================================================= -->
+
+        <div
+            id="loading"
+            class="text-center py-5"
+            style="display:none !important;">
+
+            <div
+                class="spinner-border text-primary"
+                role="status">
+
+                <span class="visually-hidden">
+                    Loading...
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SECOND LOADING STATE
+             ================================================= -->
+
+        <div
+            id="loadingState"
+            class="text-center py-5"
+            style="display:none !important;">
+
+            <div
+                class="spinner-border text-primary"
+                role="status">
+
+                <span class="visually-hidden">
+                    Loading...
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ERROR
+             ================================================= -->
+
+        <div
+            id="errorMessage"
+            class="alert alert-danger text-center"
+            style="display:none;">
+
+            <i class="bi bi-exclamation-triangle me-2"></i>
+
+            Unable to load books.
+
+        </div>
+
+
+
+        <!-- =================================================
+             BOOKS CONTAINER
+             JavaScript dynamically inserts books here
+             ================================================= -->
+
+        <div
+            id="booksContainer"
+            class="row g-4">
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     BOOK DETAILS MODAL
+     ========================================================= -->
+
+<div
+    class="modal fade"
+    id="bookDetailsModal"
+    tabindex="-1"
+    aria-labelledby="modalBookTitle"
+    aria-hidden="true">
+
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+
+            <!-- Modal Header -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <div class="text-primary small fw-semibold mb-1">
+
+                        <i class="bi bi-book me-1"></i>
+
+                        BOOK DETAILS
+
+                    </div>
+
+                    <h5
+                        class="modal-title"
+                        id="modalBookTitle">
+
+                        Book Details
+
+                    </h5>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+
+                </button>
+
+            </div>
+
+
+
+            <!-- Modal Body -->
+
+            <div class="modal-body">
+
+
+                <!-- Author -->
+
+                <div class="mb-3">
+
+                    <div class="detail-label">
+                        Author
+                    </div>
+
+                    <div
+                        id="modalBookAuthor"
+                        class="detail-value">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <!-- ISBN -->
+
+                <div class="mb-3">
+
+                    <div class="detail-label">
+                        ISBN
+                    </div>
+
+                    <div
+                        id="modalBookIsbn"
+                        class="detail-value">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <!-- Category -->
+
+                <div class="mb-3">
+
+                    <div class="detail-label">
+                        Category
+                    </div>
+
+                    <div
+                        id="modalBookCategory"
+                        class="detail-value">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+                <!-- Quantity -->
+
+                <div class="mb-1">
+
+                    <div class="detail-label">
+                        Available Copies
+                    </div>
+
+                    <div
+                        id="modalBookQuantity"
+                        class="detail-value">
+
+                        -
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- Modal Footer -->
+
+            <div class="modal-footer">
+
+
+                <button
+                    type="button"
+                    class="btn btn-light border"
+                    data-bs-dismiss="modal">
+
+                    Close
+
+                </button>
+
+
+                <!-- Booking -->
+
+                <button
+                    type="button"
+                    id="bookingButton"
+                    class="btn btn-warning"
+                    onclick="bookBook()"
+                    style="display:none;">
+
+                    <i class="bi bi-bookmark-plus me-1"></i>
+
+                    Book
+
+                </button>
+
+
+                <!-- Issue -->
+
+                <button
+                    type="button"
+                    id="issueBookButton"
+                    class="btn btn-primary"
+                    onclick="issueBook()"
+                    style="display:none;">
+
+                    <i class="bi bi-journal-plus me-1"></i>
+
+                    Issue Book
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="library-footer">
+
+    <div class="container">
+
+        <div class="footer-brand">
+
+            <i class="bi bi-book-half me-1"></i>
+
+            Digital Library Management System
+
+        </div>
+
+        <div>
+
+            © 2026 Digital Library.
+            All rights reserved.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =========================================================
+     BOOTSTRAP JS
+     ========================================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+
+<!-- =========================================================
+     BOOKS JS
+     ========================================================= -->
+
+<script src="js/books.js"></script>
+
+
+</body>
+
+</html>
