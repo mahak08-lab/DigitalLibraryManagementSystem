@@ -383,3 +383,18 @@ https://github.com/mahak08-lab
 Internship Project
 
 This project was developed as part of the Oasis Infobyte Java Development Internship - Task 5: Digital Library Management System.
+---
+
+## Project Screenshots
+
+### Home Page
+
+![Home Page](screenshots/home.png)
+
+### User Dashboard
+
+![User Dashboard](screenshots/user-dashboard.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](screenshots/admin-dashboard.png)
