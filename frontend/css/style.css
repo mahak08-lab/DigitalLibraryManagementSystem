@@ -13894,3 +13894,355 @@ body.admin-queries-page .navbar .btn-outline-danger:hover {
     position: relative;
     top: 2px;
 }
+/* =========================================================
+   ADMIN BOOKS PAGE - PROFESSIONAL STYLING
+   ========================================================= */
+
+body.admin-books-page {
+    background: #f4f7fb !important;
+    color: #0f172a !important;
+}
+
+/* ---------- NAVBAR ---------- */
+
+body.admin-books-page .navbar {
+    height: 72px !important;
+    background: #0f172a !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12) !important;
+}
+
+body.admin-books-page .navbar > .container {
+    height: 72px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+body.admin-books-page .navbar-brand {
+    color: #ffffff !important;
+    font-size: 1.18rem !important;
+    font-weight: 700 !important;
+}
+
+body.admin-books-page .navbar-brand i {
+    color: #60a5fa !important;
+}
+
+body.admin-books-page .navbar-brand:hover {
+    color: #ffffff !important;
+}
+
+body.admin-books-page .navbar .nav-link {
+    color: #cbd5e1 !important;
+    font-weight: 500 !important;
+    padding: 9px 13px !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+body.admin-books-page .navbar .nav-link:hover {
+    color: #ffffff !important;
+    background: rgba(96, 165, 250, 0.12) !important;
+}
+
+body.admin-books-page .navbar .nav-link.active {
+    color: #ffffff !important;
+    background: rgba(96, 165, 250, 0.15) !important;
+}
+
+body.admin-books-page .navbar .btn-outline-light {
+    color: #ffffff !important;
+    border-color: #64748b !important;
+    border-radius: 9px !important;
+}
+
+body.admin-books-page .navbar .btn-outline-light:hover {
+    color: #ffffff !important;
+    background: #dc2626 !important;
+    border-color: #dc2626 !important;
+}
+
+/* ---------- MAIN CONTENT ---------- */
+
+body.admin-books-page main.container {
+    max-width: 1176px !important;
+    padding-top: 42px !important;
+    padding-bottom: 50px !important;
+}
+
+/* =========================================================
+   ADMIN BOOKS - PAGE HEADER
+   ========================================================= */
+
+body.admin-books-page .page-header {
+    position: relative !important;
+    overflow: hidden !important;
+    background: linear-gradient(
+        135deg,
+        #0f172a 0%,
+        #172554 55%,
+        #312e81 100%
+    ) !important;
+    border: none !important;
+    border-radius: 20px !important;
+    padding: 42px 50px !important;
+    margin-bottom: 30px !important;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.14) !important;
+}
+
+/* Decorative circles */
+
+body.admin-books-page .page-header::before {
+    content: "" !important;
+    position: absolute !important;
+    width: 240px !important;
+    height: 240px !important;
+    border-radius: 50% !important;
+    background: rgba(96, 165, 250, 0.10) !important;
+    top: -120px !important;
+    right: 80px !important;
+}
+
+body.admin-books-page .page-header::after {
+    content: "" !important;
+    position: absolute !important;
+    width: 180px !important;
+    height: 180px !important;
+    border-radius: 50% !important;
+    background: rgba(139, 92, 246, 0.10) !important;
+    bottom: -100px !important;
+    right: -30px !important;
+}
+
+/* Keep content above decorations */
+
+body.admin-books-page .page-header > div {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Header title */
+
+body.admin-books-page .page-header h1 {
+    color: #ffffff !important;
+    font-size: 2.25rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.5px !important;
+    margin-bottom: 8px !important;
+}
+
+/* Subtitle */
+
+body.admin-books-page .page-header p {
+    color: #cbd5e1 !important;
+    font-size: 0.98rem !important;
+    margin-bottom: 0 !important;
+}
+
+/* Small library-management label */
+
+body.admin-books-page .page-header > div > div:first-child::before {
+    content: "LIBRARY MANAGEMENT" !important;
+    display: inline-block !important;
+    margin-bottom: 10px !important;
+    color: #60a5fa !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.4px !important;
+}
+
+/* Add Book button */
+
+body.admin-books-page .page-header .btn-primary {
+    background: #2563eb !important;
+    border: 1px solid #2563eb !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border-radius: 9px !important;
+    padding: 10px 17px !important;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.28) !important;
+}
+
+body.admin-books-page .page-header .btn-primary:hover {
+    background: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Refresh button */
+
+body.admin-books-page .page-header .btn-outline-primary {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(147, 197, 253, 0.65) !important;
+    font-weight: 600 !important;
+    border-radius: 9px !important;
+    padding: 10px 17px !important;
+}
+
+body.admin-books-page .page-header .btn-outline-primary:hover {
+    color: #ffffff !important;
+    background: rgba(96, 165, 250, 0.20) !important;
+    border-color: #60a5fa !important;
+}
+/* =========================================================
+   ADMIN BOOKS - FOOTER
+   ========================================================= */
+
+body.admin-books-page .admin-books-footer {
+    background: #0f172a !important;
+    color: #cbd5e1 !important;
+    margin-top: 20px !important;
+    padding: 30px 0 !important;
+    border-top: 1px solid rgba(148, 163, 184, 0.12) !important;
+}
+
+body.admin-books-page .admin-books-footer-content {
+    text-align: center !important;
+}
+
+body.admin-books-page .admin-books-footer-brand {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    color: #ffffff !important;
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 7px !important;
+}
+
+body.admin-books-page .admin-books-footer-brand i {
+    color: #60a5fa !important;
+    font-size: 1.2rem !important;
+}
+
+body.admin-books-page .admin-books-footer-text {
+    color: #94a3b8 !important;
+    font-size: 0.88rem !important;
+    margin: 0 0 8px !important;
+}
+
+body.admin-books-page .admin-books-footer small {
+    color: #64748b !important;
+    font-size: 0.78rem !important;
+}
+
+body.dashboard-page .welcome-section {
+    margin-top: 15px !important;
+}
+
+/* User Dashboard - move welcome icon to the right */
+body.dashboard-page .welcome-section .welcome-content {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+body.dashboard-page .welcome-section .welcome-text {
+    position: relative !important;
+    z-index: 2 !important;
+    padding-right: 180px !important;
+}
+
+body.dashboard-page .welcome-section .welcome-icon {
+    position: absolute !important;
+
+    left: auto !important;
+    right: 48px !important;
+    top: 50% !important;
+    bottom: auto !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 105px !important;
+    height: 105px !important;
+
+    margin: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 28px !important;
+
+    background: rgba(255, 255, 255, 0.09) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+
+    color: #bfdbfe !important;
+    font-size: 3.2rem !important;
+
+    z-index: 3 !important;
+}
+
+/* =========================================================
+   USER DASHBOARD - WELCOME SECTION SHAPE
+   ========================================================= */
+
+body.dashboard-page .welcome-section {
+    position: relative !important;
+    overflow: hidden !important;
+
+    /* Shape */
+    border-radius: 22px !important;
+
+    /* Size */
+    min-height: 245px !important;
+
+    /* Spacing */
+    margin-top: 20px !important;
+    margin-bottom: 35px !important;
+    padding: 42px 48px !important;
+
+    /* Professional card look */
+    box-shadow: 0 16px 35px rgba(15, 23, 42, 0.18) !important;
+
+    /* Keep the existing gradient */
+    background: linear-gradient(
+        135deg,
+        #0f172a 0%,
+        #1e3a8a 52%,
+        #4c1d95 100%
+    ) !important;
+}
+
+
+/* Decorative top-right circle */
+body.dashboard-page .welcome-section::before {
+    content: "" !important;
+
+    position: absolute !important;
+
+    width: 260px !important;
+    height: 260px !important;
+
+    right: -80px !important;
+    top: -120px !important;
+
+    border-radius: 50% !important;
+
+    background: rgba(255, 255, 255, 0.08) !important;
+
+    pointer-events: none !important;
+}
+
+
+/* Decorative bottom-left circle */
+body.dashboard-page .welcome-section::after {
+    content: "" !important;
+
+    position: absolute !important;
+
+    width: 180px !important;
+    height: 180px !important;
+
+    left: -70px !important;
+    bottom: -120px !important;
+
+    border-radius: 50% !important;
+
+    background: rgba(96, 165, 250, 0.14) !important;
+
+    pointer-events: none !important;
+}

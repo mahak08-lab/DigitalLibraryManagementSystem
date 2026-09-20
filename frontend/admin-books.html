@@ -2,268 +2,185 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="Manage books in the Digital Library Management System.">
-
-    <meta name="author"
-          content="Digital Library Management System">
-
-    <title>Manage Books | Digital Library</title>
-
-
-    <!-- Google Font -->
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
+    <title>Manage Books - Digital Library</title>
 
     <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
-
     <!-- Bootstrap Icons -->
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-
-    <!-- Main Project CSS -->
-    <link rel="stylesheet" href="css/style.css">
-
+    <!-- Your existing CSS -->
+   <link rel="stylesheet" href="css/style.css">
 </head>
-
 
 <body class="admin-books-page">
 
-
-    <!-- =====================================================
+    <!-- =========================
          NAVBAR
-    ====================================================== -->
+         ========================= -->
 
-    <nav class="admin-books-navbar">
-
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
 
-            <!-- BRAND -->
-
-            <a href="admin-dashboard.html"
-               class="admin-books-brand">
-
+            <a class="navbar-brand fw-bold" href="admin-dashboard.html">
                 <i class="bi bi-book-half"></i>
-
-                <span>Digital Library</span>
-
+                Digital Library
             </a>
 
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
 
-            <!-- DASHBOARD -->
+                <span class="navbar-toggler-icon"></span>
 
-            <a href="admin-dashboard.html"
-               class="admin-books-dashboard-btn">
+            </button>
 
-                <i class="bi bi-arrow-left"></i>
+            <div class="collapse navbar-collapse" id="navbarNav">
 
-                <span>Dashboard</span>
+                <ul class="navbar-nav ms-auto">
 
-            </a>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="admin-dashboard.html">
+                            <i class="bi bi-speedometer2"></i>
+                            Dashboard
+                        </a>
+                    </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link active"
+                           href="admin-books.html">
+                            <i class="bi bi-book"></i>
+                            Manage Books
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <button
+                            class="btn btn-outline-light ms-lg-3"
+                            onclick="logout()">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Logout
+                        </button>
+                    </li>
+
+                </ul>
+
+            </div>
         </div>
-
     </nav>
 
 
-
-    <!-- =====================================================
+    <!-- =========================
          MAIN CONTENT
-    ====================================================== -->
+         ========================= -->
 
-    <main class="admin-books-main">
+    <main class="container py-5">
 
-        <div class="container">
+        <!-- PAGE HEADER -->
 
+        <div class="page-header mb-4">
 
-            <!-- =================================================
-                 PAGE HEADER
-            ================================================== -->
+            <div>
+                <h1>
+                    Manage Books
+                </h1>
 
-            <section class="admin-books-header">
+                <p>
+                    View and manage books available in the digital library.
+                </p>
+            </div>
 
-                <div>
+            <div class="d-flex gap-2">
 
-                    <!-- LABEL -->
-
-                    <div class="admin-books-label">
-
-                        <i class="bi bi-bookshelf"></i>
-
-                        LIBRARY MANAGEMENT
-
-                    </div>
-
-
-                    <!-- TITLE -->
-
-                   
-
-                    <h1 class="admin-books-title">
-
-                        Manage Books
-
-                    </h1>
-
-
-                    <!-- SUBTITLE -->
-
-                    <p class="admin-books-subtitle">
-
-                        View and manage books available in the
-                        digital library.
-
-                    </p>
-
-                </div>
-
-
-                <!-- REFRESH BUTTON -->
+                <!-- ADD BOOK -->
 
                 <button
+                    class="btn btn-primary"
                     type="button"
-                    class="admin-books-refresh-btn"
+                    onclick="openAddBookModal()">
+
+                    <i class="bi bi-plus-circle"></i>
+                    Add Book
+
+                </button>
+
+
+                <!-- REFRESH -->
+
+                <button
+                    class="btn btn-outline-primary"
+                    type="button"
                     onclick="loadBooks()">
 
                     <i class="bi bi-arrow-clockwise"></i>
-
                     Refresh
 
                 </button>
 
-            </section>
+            </div>
+
+        </div>
 
 
+        <!-- =========================
+             BOOK TABLE CARD
+             ========================= -->
 
-            <!-- =================================================
-                 BOOK TABLE CARD
-            ================================================== -->
+        <div class="card shadow-sm">
 
-            <section class="admin-books-table-card">
+            <div class="card-body">
 
-
-                <!-- CARD HEADER -->
-
-                <div class="admin-books-card-header">
+                <div class="d-flex justify-content-between align-items-center mb-3">
 
                     <div>
-
-                        <h2 class="admin-books-card-title">
-
-                            <i class="bi bi-collection"></i>
-
+                        <h4 class="mb-1">
                             Library Books
+                        </h4>
 
-                        </h2>
-
-
-                        <p class="admin-books-card-description">
-
-                            Manage book information, availability
-                            and inventory.
-
+                        <p class="text-muted mb-0">
+                            Manage book information, availability and inventory.
                         </p>
-
                     </div>
 
                 </div>
 
 
-
-                <!-- =================================================
-                     TABLE
-                ================================================== -->
+                <!-- TABLE -->
 
                 <div class="table-responsive">
 
-                    <table
-                        class="table admin-books-table align-middle">
+                    <table class="table table-hover align-middle">
 
                         <thead>
 
                             <tr>
-
                                 <th>ID</th>
-
                                 <th>Book</th>
-
                                 <th>Author</th>
-
                                 <th>Category</th>
-
                                 <th>ISBN</th>
-
                                 <th>Quantity</th>
-
-                                <th class="text-center">
-
-                                    Actions
-
-                                </th>
-
+                                <th>Actions</th>
                             </tr>
 
                         </thead>
 
-
                         <tbody id="booksTableBody">
 
-
-                            <!-- LOADING -->
-
-                            <tr id="loadingRow">
-
-                                <td colspan="7">
-
-                                    <div class="admin-books-loading">
-
-                                        <div
-                                            class="spinner-border text-primary mb-3"
-                                            role="status">
-
-                                            <span
-                                                class="visually-hidden">
-
-                                                Loading...
-
-                                            </span>
-
-                                        </div>
-
-
-                                        <div>
-
-                                            Loading books...
-
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
+                            <!-- Books will be loaded using JavaScript -->
 
                         </tbody>
 
@@ -271,284 +188,213 @@
 
                 </div>
 
-            </section>
-
+            </div>
 
         </div>
 
     </main>
 
 
-
     <!-- =====================================================
-         EDIT BOOK MODAL
-    ====================================================== -->
+         ADD BOOK MODAL
+         ===================================================== -->
 
     <div
         class="modal fade"
-        id="editBookModal"
+        id="addBookModal"
         tabindex="-1"
-        aria-labelledby="editBookModalLabel"
+        aria-labelledby="addBookModalLabel"
         aria-hidden="true">
 
+        <div class="modal-dialog modal-dialog-centered">
 
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
 
+                <!-- HEADER -->
 
-            <div class="modal-content admin-books-modal">
+                <div class="modal-header">
 
+                    <h5
+                        class="modal-title"
+                        id="addBookModalLabel">
 
-                <!-- MODAL HEADER -->
+                        <i class="bi bi-book-plus"></i>
+                        Add New Book
 
-                <div class="modal-header admin-books-modal-header">
-
-                    <div>
-
-                        <div class="admin-books-modal-label">
-
-                            <i class="bi bi-pencil-square"></i>
-
-                            BOOK MANAGEMENT
-
-                        </div>
-
-
-                        <h5
-                            class="modal-title"
-                            id="editBookModalLabel">
-
-                            Edit Book
-
-                        </h5>
-
-                    </div>
-
+                    </h5>
 
                     <button
                         type="button"
                         class="btn-close"
                         data-bs-dismiss="modal"
                         aria-label="Close">
-
                     </button>
 
                 </div>
 
 
+                <!-- FORM -->
 
-                <!-- MODAL BODY -->
+                <form id="addBookForm">
 
-                <div class="modal-body admin-books-modal-body">
-
-
-                    <form id="editBookForm">
-
-
-                        <!-- HIDDEN BOOK ID -->
-
-                        <input
-                            type="hidden"
-                            id="editBookId">
-
-
-
-                        <div class="row g-4">
-
-
-                            <!-- TITLE -->
-
-                            <div class="col-md-6">
-
-                                <label
-                                    for="editTitle"
-                                    class="form-label">
-
-                                    <i class="bi bi-book me-1"></i>
-
-                                    Book Title
-
-                                </label>
-
-
-                                <input
-                                    type="text"
-                                    id="editTitle"
-                                    class="form-control"
-                                    placeholder="Enter book title"
-                                    required>
-
-                            </div>
-
-
-
-                            <!-- AUTHOR -->
-
-                            <div class="col-md-6">
-
-                                <label
-                                    for="editAuthor"
-                                    class="form-label">
-
-                                    <i class="bi bi-person me-1"></i>
-
-                                    Author
-
-                                </label>
-
-
-                                <input
-                                    type="text"
-                                    id="editAuthor"
-                                    class="form-control"
-                                    placeholder="Enter author name"
-                                    required>
-
-                            </div>
-
-
-
-                            <!-- ISBN -->
-
-                            <div class="col-md-6">
-
-                                <label
-                                    for="editIsbn"
-                                    class="form-label">
-
-                                    <i class="bi bi-upc-scan me-1"></i>
-
-                                    ISBN
-
-                                </label>
-
-
-                                <input
-                                    type="text"
-                                    id="editIsbn"
-                                    class="form-control"
-                                    placeholder="Enter ISBN"
-                                    required>
-
-                            </div>
-
-
-
-                            <!-- CATEGORY -->
-
-                            <div class="col-md-6">
-
-                                <label
-                                    for="editCategory"
-                                    class="form-label">
-
-                                    <i class="bi bi-grid me-1"></i>
-
-                                    Category
-
-                                </label>
-
-
-                                <input
-                                    type="text"
-                                    id="editCategory"
-                                    class="form-control"
-                                    placeholder="Enter category"
-                                    required>
-
-                            </div>
-
-
-
-                            <!-- QUANTITY -->
-
-                            <div class="col-md-6">
-
-                                <label
-                                    for="editQuantity"
-                                    class="form-label">
-
-                                    <i class="bi bi-stack me-1"></i>
-
-                                    Quantity
-
-                                </label>
-
-
-                                <input
-                                    type="number"
-                                    id="editQuantity"
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="Enter quantity"
-                                    required>
-
-
-                                <div class="form-text">
-
-                                    Set quantity to 0 to mark the
-                                    book as unavailable.
-
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-
+                    <div class="modal-body">
 
                         <!-- ERROR -->
 
                         <div
-                            id="editError"
-                            class="alert alert-danger mt-4 d-none">
-
+                            id="addError"
+                            class="alert alert-danger d-none">
                         </div>
-
 
 
                         <!-- SUCCESS -->
 
                         <div
-                            id="editSuccess"
-                            class="alert alert-success mt-4 d-none">
+                            id="addSuccess"
+                            class="alert alert-success d-none">
+                        </div>
+
+
+                        <!-- TITLE -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="addTitle"
+                                class="form-label">
+
+                                Book Title
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="addTitle"
+                                placeholder="Enter book title"
+                                required>
 
                         </div>
 
 
+                        <!-- AUTHOR -->
 
-                        <!-- BUTTONS -->
+                        <div class="mb-3">
 
-                        <div class="admin-books-modal-actions">
+                            <label
+                                for="addAuthor"
+                                class="form-label">
 
+                                Author
 
-                            <button
-                                type="button"
-                                class="btn admin-books-cancel-btn"
-                                data-bs-dismiss="modal">
+                            </label>
 
-                                Cancel
-
-                            </button>
-
-
-                            <button
-                                type="submit"
-                                class="btn admin-books-save-btn"
-                                id="saveBookButton">
-
-                                <i class="bi bi-check-lg me-1"></i>
-
-                                Save Changes
-
-                            </button>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="addAuthor"
+                                placeholder="Enter author name"
+                                required>
 
                         </div>
 
 
-                    </form>
+                        <!-- ISBN -->
 
-                </div>
+                        <div class="mb-3">
+
+                            <label
+                                for="addIsbn"
+                                class="form-label">
+
+                                ISBN
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="addIsbn"
+                                placeholder="Enter ISBN"
+                                required>
+
+                        </div>
+
+
+                        <!-- CATEGORY -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="addCategory"
+                                class="form-label">
+
+                                Category
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="addCategory"
+                                placeholder="Enter category"
+                                required>
+
+                        </div>
+
+
+                        <!-- QUANTITY -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="addQuantity"
+                                class="form-label">
+
+                                Quantity
+
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="addQuantity"
+                                min="0"
+                                value="1"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FOOTER -->
+
+                    <div class="modal-footer">
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                            Cancel
+
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="addBookButton">
+
+                            <i class="bi bi-plus-circle"></i>
+                            Add Book
+
+                        </button>
+
+                    </div>
+
+                </form>
 
             </div>
 
@@ -557,55 +403,265 @@
     </div>
 
 
-
     <!-- =====================================================
-         FOOTER
-    ====================================================== -->
+         EDIT BOOK MODAL
+         ===================================================== -->
 
-    <footer class="admin-books-footer">
+    <div
+        class="modal fade"
+        id="editBookModal"
+        tabindex="-1"
+        aria-labelledby="editBookModalLabel"
+        aria-hidden="true">
 
-        <div class="container">
+        <div class="modal-dialog modal-dialog-centered">
 
-            <div class="admin-books-footer-brand">
+            <div class="modal-content">
 
-                <i class="bi bi-book-half"></i>
+                <!-- HEADER -->
 
-                Digital Library Management System
+                <div class="modal-header">
 
-            </div>
+                    <h5
+                        class="modal-title"
+                        id="editBookModalLabel">
+
+                        <i class="bi bi-pencil-square"></i>
+                        Edit Book
+
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    </button>
+
+                </div>
 
 
-            <div class="admin-books-footer-text">
+                <!-- FORM -->
 
-                © 2026 Digital Library.
+                <form id="editBookForm">
 
-                All rights reserved.
+                    <div class="modal-body">
+
+                        <!-- BOOK ID -->
+
+                        <input
+                            type="hidden"
+                            id="editBookId">
+
+
+                        <!-- ERROR -->
+
+                        <div
+                            id="editError"
+                            class="alert alert-danger d-none">
+                        </div>
+
+
+                        <!-- SUCCESS -->
+
+                        <div
+                            id="editSuccess"
+                            class="alert alert-success d-none">
+                        </div>
+
+
+                        <!-- TITLE -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="editTitle"
+                                class="form-label">
+
+                                Book Title
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="editTitle"
+                                required>
+
+                        </div>
+
+
+                        <!-- AUTHOR -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="editAuthor"
+                                class="form-label">
+
+                                Author
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="editAuthor"
+                                required>
+
+                        </div>
+
+
+                        <!-- ISBN -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="editIsbn"
+                                class="form-label">
+
+                                ISBN
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="editIsbn"
+                                required>
+
+                        </div>
+
+
+                        <!-- CATEGORY -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="editCategory"
+                                class="form-label">
+
+                                Category
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="editCategory"
+                                required>
+
+                        </div>
+
+
+                        <!-- QUANTITY -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="editQuantity"
+                                class="form-label">
+
+                                Quantity
+
+                            </label>
+
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="editQuantity"
+                                min="0"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FOOTER -->
+
+                    <div class="modal-footer">
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                            Cancel
+
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="saveBookButton">
+
+                            <i class="bi bi-check-circle"></i>
+                            Save Changes
+
+                        </button>
+
+                    </div>
+
+                </form>
 
             </div>
 
         </div>
 
-    </footer>
+    </div>
 
 
+    <!-- Bootstrap JS -->
+    <!-- =========================
+     FOOTER
+     ========================= -->
+<footer class="admin-books-footer">
+    <div class="container">
+        <div class="admin-books-footer-content">
+            <div class="admin-books-footer-brand">
+                <i class="bi bi-book-half"></i>
+                <span>Digital Library</span>
+            </div>
 
-    <!-- =====================================================
-         BOOTSTRAP JAVASCRIPT
-    ====================================================== -->
+            <p class="admin-books-footer-text">
+                Smart digital library management.
+            </p>
+
+            <small>
+                © 2026 Digital Library. All rights reserved.
+            </small>
+        </div>
+    </div>
+</footer>
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
 
 
-
-    <!-- =====================================================
-         ADMIN BOOKS JAVASCRIPT
-         DO NOT CHANGE
-    ====================================================== -->
+    <!-- Admin Books JavaScript -->
 
     <script src="js/admin-books.js"></script>
 
+
+    <!-- Logout -->
+
+    <script>
+
+        function logout() {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
+
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("role");
+
+            window.location.href = "login.html";
+        }
+
+    </script>
 
 </body>
 

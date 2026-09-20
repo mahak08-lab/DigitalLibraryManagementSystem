@@ -1,5 +1,6 @@
 package com.mhk.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,6 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByUserId(Long userId);
 
     List<Loan> findByStatus(LoanStatus status);
+
+    List<Loan> findByFineAmountGreaterThan(BigDecimal amount);
 }

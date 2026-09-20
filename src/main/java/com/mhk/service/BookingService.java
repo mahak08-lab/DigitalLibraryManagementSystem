@@ -12,7 +12,6 @@ import com.mhk.dto.BookingResponseDTO;
 import com.mhk.entity.Book;
 import com.mhk.entity.Booking;
 import com.mhk.entity.BookingStatus;
-import com.mhk.entity.Loan;
 import com.mhk.entity.LoanStatus;
 import com.mhk.entity.User;
 import com.mhk.exception.ResourceNotFoundException;
@@ -27,108 +26,152 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookingService {
 
-    private final BookingRepository bookingRepository;
-    private final UserRepository userRepository;
-    private final BookRepository bookRepository;
-    private final LoanRepository loanRepository;
 
-    // =========================
-    // CREATE BOOKING
-    // =========================
-    @Transactional
-    public BookingResponseDTO createBooking(BookingRequestDTO dto) {
+private final BookingRepository bookingRepository;
+private final UserRepository userRepository;
+private final BookRepository bookRepository;
+private final LoanRepository loanRepository;
 
-        String email = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "User not found with email: " + email));
+// =========================================================
+// USER - CREATE BOOKING
+// =========================================================
 
-        Book book = bookRepository.findById(dto.getBookId())
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Book not found with id: " + dto.getBookId()));
+@Transactional
+public BookingResponseDTO createBooking(BookingRequestDTO dto) {
 
-        // A booking is only allowed when the book is unavailable.
-        if (book.getQuantity() > 0) {
-            throw new RuntimeException(
-                    "Book is currently available. You can issue it directly.");
-        }
+    String email = SecurityContextHolder
+            .getContext()
+            .getAuthentication()
+            .getName();
 
-        // Check whether this user already has an active loan
-        // for the same book.
-        loanRepository
-                .findByUserIdAndBookIdAndStatus(
-                        user.getId(),
-                        book.getId(),
-                        LoanStatus.ISSUED)
-                .ifPresent(existingLoan -> {
-                    throw new RuntimeException(
-                            "You already have this book issued.");
-                });
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                            "User not found with email: " + email));
 
-        // Check duplicate waiting booking.
-        bookingRepository
-                .findByUserIdAndBookIdAndStatus(
-                        user.getId(),
-                        book.getId(),
-                        BookingStatus.WAITING)
-                .ifPresent(existingBooking -> {
-                    throw new RuntimeException(
-                            "You have already booked this book.");
-                });
 
-        Booking booking = Booking.builder()
-                .user(user)
-                .book(book)
-                .bookingDate(LocalDateTime.now())
-                .status(BookingStatus.WAITING)
-                .build();
+    Book book = bookRepository.findById(dto.getBookId())
+            .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                            "Book not found with id: " + dto.getBookId()));
 
-        Booking savedBooking = bookingRepository.save(booking);
 
-        return convertToDTO(savedBooking);
+    // ---------------------------------------------------------
+    // Booking is allowed only when the book is unavailable
+    // ---------------------------------------------------------
+
+    if (book.getQuantity() > 0) {
+
+        throw new RuntimeException(
+                "Book is currently available. You can issue it directly.");
     }
 
-    // =========================
-    // GET MY BOOKINGS
-    // =========================
-    public List<BookingResponseDTO> getMyBookings() {
 
-        String email = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
+    // ---------------------------------------------------------
+    // Check whether user already has this book issued
+    // ---------------------------------------------------------
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "User not found with email: " + email));
+    loanRepository
+            .findByUserIdAndBookIdAndStatus(
+                    user.getId(),
+                    book.getId(),
+                    LoanStatus.ISSUED)
+            .ifPresent(existingLoan -> {
 
-        return bookingRepository
-                .findByUserId(user.getId())
-                .stream()
-                .map(this::convertToDTO)
-                .toList();
-    }
+                throw new RuntimeException(
+                        "You already have this book issued.");
+            });
 
-    // =========================
-    // ENTITY → DTO
-    // =========================
-    private BookingResponseDTO convertToDTO(Booking booking) {
 
-        return BookingResponseDTO.builder()
-                .id(booking.getId())
-                .userId(booking.getUser().getId())
-                .userName(booking.getUser().getName())
-                .bookId(booking.getBook().getId())
-                .bookTitle(booking.getBook().getTitle())
-                .bookingDate(booking.getBookingDate())
-                .status(booking.getStatus())
-                .build();
-    }
+    // ---------------------------------------------------------
+    // Check duplicate waiting booking
+    // ---------------------------------------------------------
+
+    bookingRepository
+            .findByUserIdAndBookIdAndStatus(
+                    user.getId(),
+                    book.getId(),
+                    BookingStatus.WAITING)
+            .ifPresent(existingBooking -> {
+
+                throw new RuntimeException(
+                        "You have already booked this book.");
+            });
+
+
+    // ---------------------------------------------------------
+    // Create booking
+    // ---------------------------------------------------------
+
+    Booking booking = Booking.builder()
+            .user(user)
+            .book(book)
+            .bookingDate(LocalDateTime.now())
+            .status(BookingStatus.WAITING)
+            .build();
+
+
+    Booking savedBooking = bookingRepository.save(booking);
+
+    return convertToDTO(savedBooking);
+}
+
+
+// =========================================================
+// USER - GET MY BOOKINGS
+// =========================================================
+
+public List<BookingResponseDTO> getMyBookings() {
+
+    String email = SecurityContextHolder
+            .getContext()
+            .getAuthentication()
+            .getName();
+
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                            "User not found with email: " + email));
+
+
+    return bookingRepository
+            .findByUserId(user.getId())
+            .stream()
+            .map(this::convertToDTO)
+            .toList();
+}
+
+
+// =========================================================
+// ADMIN - GET ALL BOOKINGS
+// =========================================================
+
+public List<BookingResponseDTO> getAllBookings() {
+
+    return bookingRepository
+            .findAll()
+            .stream()
+            .map(this::convertToDTO)
+            .toList();
+}
+
+
+// =========================================================
+// ENTITY → DTO
+// =========================================================
+
+private BookingResponseDTO convertToDTO(Booking booking) {
+
+    return BookingResponseDTO.builder()
+            .id(booking.getId())
+            .userId(booking.getUser().getId())
+            .userName(booking.getUser().getName())
+            .bookId(booking.getBook().getId())
+            .bookTitle(booking.getBook().getTitle())
+            .bookingDate(booking.getBookingDate())
+            .status(booking.getStatus())
+            .build();
+}
+
 }

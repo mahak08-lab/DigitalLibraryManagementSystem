@@ -1,30 +1,33 @@
-const API_BASE_URL = "https://digitallibrarymanagementsystem-production-a092.up.railway.app";
+// ============================================================
+// ADMIN BOOKS JAVASCRIPT
+// ============================================================
+
+
+// Railway Backend URL
+
+const API_BASE_URL = "http://localhost:8080";
+
+
+// Books array
 
 let books = [];
+
+
+// Currently selected book ID for editing
+
 let selectedBookId = null;
 
-// ================================
-// PAGE LOAD
-// ================================
 
-document.addEventListener("DOMContentLoaded", function () {
+// Bootstrap modal
 
-    loadBooks();
+let addBookModal = null;
 
-    const form = document.getElementById("editBookForm");
-
-    if (form) {
-        form.addEventListener("submit", function (event) {
-            event.preventDefault();
-            updateBook();
-        });
-    }
-});
+let editBookModal = null;
 
 
-// ================================
+// ============================================================
 // GET TOKEN
-// ================================
+// ============================================================
 
 function getToken() {
 
@@ -38,104 +41,289 @@ function getToken() {
 }
 
 
-// ================================
-// LOAD BOOKS
-// ================================
+// ============================================================
+// PAGE LOAD
+// ============================================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    console.log("Admin books page loaded.");
+
+    // ----------------------------------------
+    // ADD BOOK MODAL
+    // ----------------------------------------
+
+    const addBookModalElement =
+        document.getElementById("addBookModal");
+
+    if (addBookModalElement) {
+
+        addBookModal =
+            new bootstrap.Modal(addBookModalElement);
+    }
+
+
+    // ----------------------------------------
+    // EDIT BOOK MODAL
+    // ----------------------------------------
+
+    const editBookModalElement =
+        document.getElementById("editBookModal");
+
+    if (editBookModalElement) {
+
+        editBookModal =
+            new bootstrap.Modal(editBookModalElement);
+    }
+
+
+    // ----------------------------------------
+    // ADD BOOK FORM
+    // ----------------------------------------
+
+    const addBookForm =
+        document.getElementById("addBookForm");
+
+    if (addBookForm) {
+
+        addBookForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                addBook();
+            }
+        );
+    }
+
+
+    // ----------------------------------------
+    // EDIT BOOK FORM
+    // ----------------------------------------
+
+    const editBookForm =
+        document.getElementById("editBookForm");
+
+    if (editBookForm) {
+
+        editBookForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                updateBook();
+            }
+        );
+    }
+
+
+    // ----------------------------------------
+    // LOAD BOOKS
+    // ----------------------------------------
+
+    loadBooks();
+
+});
+
+
+// ============================================================
+// LOAD ALL BOOKS
+// ============================================================
 
 async function loadBooks() {
 
-    const tableBody = document.getElementById("booksTableBody");
-
-    if (!tableBody) {
-        console.error("booksTableBody not found.");
-        return;
-    }
-
-    const token = getToken();
-
-    if (!token) {
-        alert("Please login first.");
-        window.location.href = "login.html";
-        return;
-    }
-
-    tableBody.innerHTML = `
-        <tr>
-            <td colspan="7" class="text-center">
-                <div class="loading-state">
-                    <div class="spinner-border text-primary mb-3"></div>
-                    <div>Loading books...</div>
-                </div>
-            </td>
-        </tr>
-    `;
+    const tableBody =
+        document.getElementById("booksTableBody");
 
     try {
 
-        const response = await fetch(
-            API_BASE_URL + "/api/books",
-            {
-                method: "GET",
-                headers: {
-                    "Authorization": "Bearer " + token
-                }
-            }
+        console.log(
+            "Loading books from:",
+            API_BASE_URL + "/api/books"
         );
+
+
+        const token = getToken();
+
+
+        if (!token) {
+
+            console.error("No authentication token found.");
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7"
+                        class="text-center text-danger py-4">
+
+                        <i class="bi bi-shield-exclamation"></i>
+                        Admin login session expired.
+
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        const response =
+            await fetch(
+                API_BASE_URL + "/api/books",
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token,
+
+                        "Content-Type":
+                            "application/json"
+                    }
+
+                }
+            );
+
+
+        // ----------------------------------------
+        // UNAUTHORIZED
+        // ----------------------------------------
+
+        if (response.status === 401) {
+
+            console.error(
+                "401 Unauthorized"
+            );
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7"
+                        class="text-center text-danger py-4">
+
+                        <i class="bi bi-shield-x"></i>
+                        Session expired. Please login again.
+
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // FORBIDDEN
+        // ----------------------------------------
+
+        if (response.status === 403) {
+
+            console.error(
+                "403 Forbidden"
+            );
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7"
+                        class="text-center text-danger py-4">
+
+                        <i class="bi bi-lock"></i>
+                        You are not authorized to access this page.
+
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // OTHER ERRORS
+        // ----------------------------------------
 
         if (!response.ok) {
 
-            if (response.status === 401 ||
-                response.status === 403) {
-
-                alert("You are not authorized to manage books.");
-                return;
-            }
-
             throw new Error(
-                "Failed to load books. Status: " + response.status
+                "HTTP error: " + response.status
             );
         }
 
-        books = await response.json();
+
+        // ----------------------------------------
+        // RESPONSE
+        // ----------------------------------------
+
+        books =
+            await response.json();
+
+
+        console.log(
+            "Books received from backend:",
+            books
+        );
+
 
         displayBooks();
 
-    } catch (error) {
+    }
 
-        console.error("Error loading books:", error);
+    catch (error) {
+
+        console.error(
+            "Error loading books:",
+            error
+        );
+
 
         tableBody.innerHTML = `
             <tr>
-                <td colspan="7" class="text-center text-danger">
+                <td colspan="7"
+                    class="text-center text-danger py-4">
+
+                    <i class="bi bi-exclamation-triangle"></i>
                     Unable to load books.
+
                 </td>
             </tr>
         `;
     }
+
 }
 
 
-// ================================
+// ============================================================
 // DISPLAY BOOKS
-// ================================
+// ============================================================
 
 function displayBooks() {
 
-    const tableBody = document.getElementById("booksTableBody");
+    const tableBody =
+        document.getElementById("booksTableBody");
 
-    if (!tableBody) {
-        console.error("booksTableBody not found.");
-        return;
-    }
 
-    tableBody.innerHTML = "";
+    // ----------------------------------------
+    // NO BOOKS
+    // ----------------------------------------
 
     if (!books || books.length === 0) {
 
         tableBody.innerHTML = `
             <tr>
-                <td colspan="7" class="text-center">
+                <td colspan="7"
+                    class="text-center text-muted py-5">
+
+                    <i class="bi bi-book fs-2 d-block mb-2"></i>
+
                     No books found.
+
+                    <div class="mt-2">
+                        Click <strong>Add Book</strong>
+                        to add the first book.
+                    </div>
+
                 </td>
             </tr>
         `;
@@ -143,386 +331,1081 @@ function displayBooks() {
         return;
     }
 
+
+    // ----------------------------------------
+    // CREATE ROWS
+    // ----------------------------------------
+
+    tableBody.innerHTML = "";
+
+
     books.forEach(function (book) {
 
-        const row = document.createElement("tr");
+        const row =
+            document.createElement("tr");
 
-        // ID
-        const idCell = document.createElement("td");
-        idCell.textContent = book.id;
 
-        // TITLE
-        const titleCell = document.createElement("td");
+        row.innerHTML = `
 
-        const titleStrong = document.createElement("strong");
-        titleStrong.textContent = book.title;
+            <td>
+                ${book.id ?? ""}
+            </td>
 
-        titleCell.appendChild(titleStrong);
 
-        // AUTHOR
-        const authorCell = document.createElement("td");
-        authorCell.textContent = book.author;
+            <td>
+                <strong>
+                    ${escapeHtml(book.title ?? "")}
+                </strong>
+            </td>
 
-        // CATEGORY
-        const categoryCell = document.createElement("td");
 
-        const categoryBadge = document.createElement("span");
+            <td>
+                ${escapeHtml(book.author ?? "")}
+            </td>
 
-        categoryBadge.className = "badge bg-primary";
-        categoryBadge.textContent = book.category;
 
-        categoryCell.appendChild(categoryBadge);
+            <td>
+                <span class="badge bg-light text-dark">
+                    ${escapeHtml(book.category ?? "")}
+                </span>
+            </td>
 
-        // ISBN
-        const isbnCell = document.createElement("td");
-        isbnCell.textContent = book.isbn;
 
-        // QUANTITY
-        const quantityCell = document.createElement("td");
+            <td>
+                ${escapeHtml(book.isbn ?? "")}
+            </td>
 
-        const quantityBadge = document.createElement("span");
 
-        if (book.quantity === 0) {
+            <td>
+                <span class="badge
+                    ${Number(book.quantity) > 0
+                        ? "bg-success"
+                        : "bg-danger"}">
 
-            quantityBadge.className = "badge bg-danger";
-            quantityBadge.textContent = "0 - Unavailable";
+                    ${book.quantity ?? 0}
 
-        } else {
+                </span>
+            </td>
 
-            quantityBadge.className = "badge bg-success";
-            quantityBadge.textContent = book.quantity;
-        }
 
-        quantityCell.appendChild(quantityBadge);
+            <td>
 
-        // ACTIONS
-        const actionCell = document.createElement("td");
+                <div class="d-flex gap-2">
 
-        actionCell.className = "text-center";
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-primary"
+                        onclick="editBook(${book.id})">
 
-        // EDIT BUTTON
-        const editButton = document.createElement("button");
+                        <i class="bi bi-pencil"></i>
+                        Edit
 
-        editButton.type = "button";
-        editButton.className = "btn btn-sm btn-primary me-1";
-        editButton.innerHTML = '<i class="bi bi-pencil"></i> Edit';
+                    </button>
 
-        editButton.addEventListener("click", function () {
-            editBook(book.id);
-        });
 
-        // DELETE BUTTON
-        const deleteButton = document.createElement("button");
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        onclick="deleteBook(${book.id})">
 
-        deleteButton.type = "button";
-        deleteButton.className = "btn btn-sm btn-danger";
-        deleteButton.innerHTML = '<i class="bi bi-trash"></i> Delete';
+                        <i class="bi bi-trash"></i>
+                        Delete
 
-        deleteButton.addEventListener("click", function () {
-            deleteBook(book.id);
-        });
+                    </button>
 
-        actionCell.appendChild(editButton);
-        actionCell.appendChild(deleteButton);
+                </div>
 
-        // ADD CELLS TO ROW
-        row.appendChild(idCell);
-        row.appendChild(titleCell);
-        row.appendChild(authorCell);
-        row.appendChild(categoryCell);
-        row.appendChild(isbnCell);
-        row.appendChild(quantityCell);
-        row.appendChild(actionCell);
+            </td>
 
-        // ADD ROW TO TABLE
+        `;
+
+
         tableBody.appendChild(row);
+
     });
+
 }
 
 
-// ================================
-// EDIT BOOK
-// ================================
+// ============================================================
+// ESCAPE HTML
+// ============================================================
 
-function editBook(id) {
+function escapeHtml(value) {
 
-    const book = books.find(function (item) {
-        return item.id === id;
-    });
+    const div =
+        document.createElement("div");
 
-    if (!book) {
-        alert("Book not found.");
-        return;
-    }
+    div.textContent = value;
 
-    selectedBookId = book.id;
-
-    document.getElementById("editBookId").value = book.id;
-    document.getElementById("editTitle").value = book.title;
-    document.getElementById("editAuthor").value = book.author;
-    document.getElementById("editIsbn").value = book.isbn;
-    document.getElementById("editCategory").value = book.category;
-    document.getElementById("editQuantity").value = book.quantity;
-
-    const errorBox = document.getElementById("editError");
-    const successBox = document.getElementById("editSuccess");
-
-    if (errorBox) {
-        errorBox.textContent = "";
-        errorBox.classList.add("d-none");
-    }
-
-    if (successBox) {
-        successBox.textContent = "";
-        successBox.classList.add("d-none");
-    }
-
-    const modalElement = document.getElementById("editBookModal");
-
-    if (!modalElement) {
-        console.error("editBookModal not found.");
-        return;
-    }
-
-    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
-
-    modal.show();
+    return div.innerHTML;
 }
 
 
-// ================================
-// UPDATE BOOK
-// ================================
+// ============================================================
+// OPEN ADD BOOK MODAL
+// ============================================================
 
-async function updateBook() {
+function openAddBookModal() {
 
-    if (selectedBookId === null) {
+    const form =
+        document.getElementById("addBookForm");
 
-        showEditError("Please select a book.");
+
+    if (form) {
+        form.reset();
+    }
+
+
+    // Default quantity
+
+    document.getElementById(
+        "addQuantity"
+    ).value = 1;
+
+
+    // Clear error
+
+    const errorBox =
+        document.getElementById("addError");
+
+    errorBox.textContent = "";
+
+    errorBox.classList.add("d-none");
+
+
+    // Clear success
+
+    const successBox =
+        document.getElementById("addSuccess");
+
+    successBox.textContent = "";
+
+    successBox.classList.add("d-none");
+
+
+    // Show modal
+
+    if (addBookModal) {
+
+        addBookModal.show();
+
+    } else {
+
+        console.error(
+            "Add Book modal not initialized."
+        );
+    }
+
+}
+
+
+// ============================================================
+// ADD BOOK
+// ============================================================
+
+async function addBook() {
+
+    const title =
+        document
+            .getElementById("addTitle")
+            .value
+            .trim();
+
+
+    const author =
+        document
+            .getElementById("addAuthor")
+            .value
+            .trim();
+
+
+    const isbn =
+        document
+            .getElementById("addIsbn")
+            .value
+            .trim();
+
+
+    const category =
+        document
+            .getElementById("addCategory")
+            .value
+            .trim();
+
+
+    const quantityValue =
+        document
+            .getElementById("addQuantity")
+            .value;
+
+
+    const quantity =
+        Number(quantityValue);
+
+
+    const errorBox =
+        document.getElementById("addError");
+
+
+    const successBox =
+        document.getElementById("addSuccess");
+
+
+    const addButton =
+        document.getElementById("addBookButton");
+
+
+    // ----------------------------------------
+    // CLEAR MESSAGES
+    // ----------------------------------------
+
+    errorBox.textContent = "";
+
+    errorBox.classList.add("d-none");
+
+    successBox.textContent = "";
+
+    successBox.classList.add("d-none");
+
+
+    // ----------------------------------------
+    // VALIDATION
+    // ----------------------------------------
+
+    if (
+        !title ||
+        !author ||
+        !isbn ||
+        !category
+    ) {
+
+        errorBox.textContent =
+            "Please fill all required fields.";
+
+        errorBox.classList.remove("d-none");
+
         return;
     }
 
-    const token = getToken();
+
+    if (
+        quantityValue === "" ||
+        !Number.isInteger(quantity) ||
+        quantity < 0
+    ) {
+
+        errorBox.textContent =
+            "Quantity must be a whole number greater than or equal to 0.";
+
+        errorBox.classList.remove("d-none");
+
+        return;
+    }
+
+
+    // ----------------------------------------
+    // TOKEN
+    // ----------------------------------------
+
+    const token =
+        getToken();
+
 
     if (!token) {
 
-        alert("Please login first.");
-        window.location.href = "login.html";
+        errorBox.textContent =
+            "Admin login session expired. Please login again.";
+
+        errorBox.classList.remove("d-none");
+
         return;
     }
 
-    const title = document.getElementById("editTitle").value.trim();
-    const author = document.getElementById("editAuthor").value.trim();
-    const isbn = document.getElementById("editIsbn").value.trim();
-    const category = document.getElementById("editCategory").value.trim();
-    const quantity = document.getElementById("editQuantity").value;
 
-    // Validation
-
-    if (title === "") {
-        showEditError("Book title is required.");
-        return;
-    }
-
-    if (author === "") {
-        showEditError("Author is required.");
-        return;
-    }
-
-    if (isbn === "") {
-        showEditError("ISBN is required.");
-        return;
-    }
-
-    if (category === "") {
-        showEditError("Category is required.");
-        return;
-    }
-
-    if (quantity === "" || Number(quantity) < 0) {
-        showEditError("Quantity must be 0 or greater.");
-        return;
-    }
+    // ----------------------------------------
+    // BOOK DATA
+    // ----------------------------------------
 
     const bookData = {
+
         title: title,
+
         author: author,
+
         isbn: isbn,
+
         category: category,
-        quantity: Number(quantity)
+
+        quantity: quantity
+
     };
+
+
+    console.log(
+        "Adding book:",
+        bookData
+    );
+
 
     try {
 
-        const response = await fetch(
-            API_BASE_URL + "/api/books/" + selectedBookId,
-            {
-                method: "PUT",
+        // Disable button
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + token
-                },
+        addButton.disabled = true;
 
-                body: JSON.stringify(bookData)
-            }
-        );
+        addButton.innerHTML = `
+            <span
+                class="spinner-border spinner-border-sm me-1">
+            </span>
+            Adding...
+        `;
 
-        let result = null;
 
-        try {
-            result = await response.json();
-        } catch (error) {
-            result = null;
-        }
+        // ----------------------------------------
+        // POST REQUEST
+        // ----------------------------------------
 
-        if (!response.ok) {
+        const response =
+            await fetch(
+                API_BASE_URL + "/api/books",
+                {
 
-            let message = "Unable to update book.";
+                    method: "POST",
 
-            if (result && result.message) {
-                message = result.message;
-            }
+                    headers: {
 
-            showEditError(message);
+                        "Authorization":
+                            "Bearer " + token,
+
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(bookData)
+
+                }
+            );
+
+
+        // ----------------------------------------
+        // UNAUTHORIZED
+        // ----------------------------------------
+
+        if (response.status === 401) {
+
+            errorBox.textContent =
+                "Your login session has expired. Please login again.";
+
+            errorBox.classList.remove("d-none");
+
             return;
         }
 
-        showEditSuccess("Book updated successfully!");
+
+        // ----------------------------------------
+        // FORBIDDEN
+        // ----------------------------------------
+
+        if (response.status === 403) {
+
+            errorBox.textContent =
+                "You are not authorized to add books. Please login as Admin.";
+
+            errorBox.classList.remove("d-none");
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // OTHER ERROR
+        // ----------------------------------------
+
+        if (!response.ok) {
+
+            let message =
+                "Failed to add book.";
+
+
+            try {
+
+                const errorData =
+                    await response.json();
+
+
+                if (errorData.message) {
+
+                    message =
+                        errorData.message;
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.log(
+                    "Could not parse error response."
+                );
+            }
+
+
+            errorBox.textContent =
+                message;
+
+            errorBox.classList.remove("d-none");
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // SUCCESS
+        // ----------------------------------------
+
+        const addedBook =
+            await response.json();
+
+
+        console.log(
+            "Book added successfully:",
+            addedBook
+        );
+
+
+        successBox.textContent =
+            "Book added successfully!";
+
+
+        successBox.classList.remove(
+            "d-none"
+        );
+
+
+        // Reset form
+
+        document
+            .getElementById("addBookForm")
+            .reset();
+
+
+        document.getElementById(
+            "addQuantity"
+        ).value = 1;
+
+
+        // Reload books
+
+        await loadBooks();
+
+
+        // Close modal after short delay
 
         setTimeout(function () {
 
-            const modalElement =
-                document.getElementById("editBookModal");
+            if (addBookModal) {
 
-            const modal =
-                bootstrap.Modal.getInstance(modalElement);
+                addBookModal.hide();
 
-            if (modal) {
-                modal.hide();
             }
-
-            selectedBookId = null;
-
-            loadBooks();
 
         }, 800);
 
-    } catch (error) {
-
-        console.error("Update book error:", error);
-
-        showEditError(
-            "Something went wrong while updating the book."
-        );
     }
+
+
+    catch (error) {
+
+        console.error(
+            "Error adding book:",
+            error
+        );
+
+
+        errorBox.textContent =
+            "Unable to connect to the server.";
+
+        errorBox.classList.remove(
+            "d-none"
+        );
+
+    }
+
+
+    finally {
+
+        // Enable button
+
+        addButton.disabled = false;
+
+        addButton.innerHTML = `
+            <i class="bi bi-plus-circle"></i>
+            Add Book
+        `;
+
+    }
+
 }
 
 
-// ================================
-// DELETE BOOK
-// ================================
+// ============================================================
+// EDIT BOOK
+// ============================================================
 
-async function deleteBook(id) {
+function editBook(id) {
 
-    const confirmed = confirm(
-        "Are you sure you want to delete this book?"
-    );
+    const book =
+        books.find(
+            function (item) {
+                return item.id === id;
+            }
+        );
 
-    if (!confirmed) {
+
+    if (!book) {
+
+        console.error(
+            "Book not found:",
+            id
+        );
+
         return;
     }
 
-    const token = getToken();
+
+    selectedBookId =
+        id;
+
+
+    // Fill form
+
+    document.getElementById(
+        "editBookId"
+    ).value = book.id;
+
+
+    document.getElementById(
+        "editTitle"
+    ).value = book.title ?? "";
+
+
+    document.getElementById(
+        "editAuthor"
+    ).value = book.author ?? "";
+
+
+    document.getElementById(
+        "editIsbn"
+    ).value = book.isbn ?? "";
+
+
+    document.getElementById(
+        "editCategory"
+    ).value = book.category ?? "";
+
+
+    document.getElementById(
+        "editQuantity"
+    ).value = book.quantity ?? 0;
+
+
+    // Clear messages
+
+    document
+        .getElementById("editError")
+        .classList.add("d-none");
+
+
+    document
+        .getElementById("editSuccess")
+        .classList.add("d-none");
+
+
+    // Show modal
+
+    if (editBookModal) {
+
+        editBookModal.show();
+
+    }
+
+}
+
+
+// ============================================================
+// UPDATE BOOK
+// ============================================================
+
+async function updateBook() {
+
+    if (!selectedBookId) {
+
+        console.error(
+            "No book selected."
+        );
+
+        return;
+    }
+
+
+    const title =
+        document
+            .getElementById("editTitle")
+            .value
+            .trim();
+
+
+    const author =
+        document
+            .getElementById("editAuthor")
+            .value
+            .trim();
+
+
+    const isbn =
+        document
+            .getElementById("editIsbn")
+            .value
+            .trim();
+
+
+    const category =
+        document
+            .getElementById("editCategory")
+            .value
+            .trim();
+
+
+    const quantityValue =
+        document
+            .getElementById("editQuantity")
+            .value;
+
+
+    const quantity =
+        Number(quantityValue);
+
+
+    const errorBox =
+        document.getElementById("editError");
+
+
+    const successBox =
+        document.getElementById("editSuccess");
+
+
+    const saveButton =
+        document.getElementById("saveBookButton");
+
+
+    // Clear messages
+
+    errorBox.textContent = "";
+
+    errorBox.classList.add("d-none");
+
+    successBox.textContent = "";
+
+    successBox.classList.add("d-none");
+
+
+    // ----------------------------------------
+    // VALIDATION
+    // ----------------------------------------
+
+    if (
+        !title ||
+        !author ||
+        !isbn ||
+        !category
+    ) {
+
+        errorBox.textContent =
+            "Please fill all required fields.";
+
+        errorBox.classList.remove(
+            "d-none"
+        );
+
+        return;
+    }
+
+
+    if (
+        quantityValue === "" ||
+        !Number.isInteger(quantity) ||
+        quantity < 0
+    ) {
+
+        errorBox.textContent =
+            "Quantity must be a whole number greater than or equal to 0.";
+
+        errorBox.classList.remove(
+            "d-none"
+        );
+
+        return;
+    }
+
+
+    const token =
+        getToken();
+
 
     if (!token) {
 
-        alert("Please login first.");
-        window.location.href = "login.html";
+        errorBox.textContent =
+            "Admin login session expired. Please login again.";
+
+        errorBox.classList.remove(
+            "d-none"
+        );
+
         return;
     }
+
+
+    // ----------------------------------------
+    // BOOK DATA
+    // ----------------------------------------
+
+    const bookData = {
+
+        title: title,
+
+        author: author,
+
+        isbn: isbn,
+
+        category: category,
+
+        quantity: quantity
+
+    };
+
 
     try {
 
-        const response = await fetch(
-            API_BASE_URL + "/api/books/" + id,
-            {
-                method: "DELETE",
+        saveButton.disabled = true;
 
-                headers: {
-                    "Authorization": "Bearer " + token
+        saveButton.innerHTML = `
+            <span
+                class="spinner-border spinner-border-sm me-1">
+            </span>
+            Saving...
+        `;
+
+
+        // ----------------------------------------
+        // PUT REQUEST
+        // ----------------------------------------
+
+        const response =
+            await fetch(
+                API_BASE_URL +
+                "/api/books/" +
+                selectedBookId,
+                {
+
+                    method: "PUT",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token,
+
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(bookData)
+
                 }
-            }
-        );
+            );
 
-        let result = null;
 
-        try {
-            result = await response.json();
-        } catch (error) {
-            result = null;
-        }
+        // ----------------------------------------
+        // UNAUTHORIZED
+        // ----------------------------------------
 
-        if (!response.ok) {
+        if (response.status === 401) {
 
-            let message = "Unable to delete book.";
+            errorBox.textContent =
+                "Your login session has expired. Please login again.";
 
-            if (result && result.message) {
-                message = result.message;
-            }
+            errorBox.classList.remove(
+                "d-none"
+            );
 
-            alert(message);
             return;
         }
 
-        alert("Book deleted successfully!");
 
-        loadBooks();
+        // ----------------------------------------
+        // FORBIDDEN
+        // ----------------------------------------
 
-    } catch (error) {
+        if (response.status === 403) {
 
-        console.error("Delete book error:", error);
+            errorBox.textContent =
+                "You are not authorized to update books.";
+
+            errorBox.classList.remove(
+                "d-none"
+            );
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // OTHER ERROR
+        // ----------------------------------------
+
+        if (!response.ok) {
+
+            let message =
+                "Failed to update book.";
+
+
+            try {
+
+                const errorData =
+                    await response.json();
+
+
+                if (errorData.message) {
+
+                    message =
+                        errorData.message;
+                }
+
+            }
+
+            catch (error) {
+
+                console.log(
+                    "Could not parse error response."
+                );
+            }
+
+
+            errorBox.textContent =
+                message;
+
+            errorBox.classList.remove(
+                "d-none"
+            );
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // SUCCESS
+        // ----------------------------------------
+
+        await response.json();
+
+
+        successBox.textContent =
+            "Book updated successfully!";
+
+
+        successBox.classList.remove(
+            "d-none"
+        );
+
+
+        // Reload books
+
+        await loadBooks();
+
+
+        // Close modal
+
+        setTimeout(function () {
+
+            if (editBookModal) {
+
+                editBookModal.hide();
+
+            }
+
+        }, 800);
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Error updating book:",
+            error
+        );
+
+
+        errorBox.textContent =
+            "Unable to connect to the server.";
+
+        errorBox.classList.remove(
+            "d-none"
+        );
+
+    }
+
+
+    finally {
+
+        saveButton.disabled = false;
+
+        saveButton.innerHTML = `
+            <i class="bi bi-check-circle"></i>
+            Save Changes
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// DELETE BOOK
+// ============================================================
+
+async function deleteBook(id) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this book?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+    }
+
+
+    const token =
+        getToken();
+
+
+    if (!token) {
 
         alert(
-            "Something went wrong while deleting the book."
+            "Admin login session expired. Please login again."
         );
-    }
-}
 
-
-// ================================
-// SHOW ERROR
-// ================================
-
-function showEditError(message) {
-
-    const errorBox = document.getElementById("editError");
-
-    if (!errorBox) {
-        alert(message);
         return;
     }
 
-    errorBox.textContent = message;
 
-    errorBox.classList.remove("d-none");
-}
+    try {
+
+        console.log(
+            "Deleting book:",
+            id
+        );
 
 
-// ================================
-// SHOW SUCCESS
-// ================================
+        const response =
+            await fetch(
+                API_BASE_URL +
+                "/api/books/" +
+                id,
+                {
 
-function showEditSuccess(message) {
+                    method: "DELETE",
 
-    const successBox = document.getElementById("editSuccess");
+                    headers: {
 
-    if (!successBox) {
-        alert(message);
-        return;
+                        "Authorization":
+                            "Bearer " + token
+
+                    }
+
+                }
+            );
+
+
+        // ----------------------------------------
+        // UNAUTHORIZED
+        // ----------------------------------------
+
+        if (response.status === 401) {
+
+            alert(
+                "Your login session has expired. Please login again."
+            );
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // FORBIDDEN
+        // ----------------------------------------
+
+        if (response.status === 403) {
+
+            alert(
+                "You are not authorized to delete books."
+            );
+
+            return;
+        }
+
+
+        // ----------------------------------------
+        // ERROR
+        // ----------------------------------------
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP error: " +
+                response.status
+            );
+        }
+
+
+        // ----------------------------------------
+        // SUCCESS
+        // ----------------------------------------
+
+        console.log(
+            "Book deleted successfully."
+        );
+
+
+        // Reload books
+
+        await loadBooks();
+
+
+        alert(
+            "Book deleted successfully."
+        );
+
     }
 
-    successBox.textContent = message;
 
-    successBox.classList.remove("d-none");
+    catch (error) {
+
+        console.error(
+            "Error deleting book:",
+            error
+        );
+
+
+        alert(
+            "Unable to delete the book."
+        );
+
+    }
+
 }

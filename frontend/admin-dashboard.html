@@ -1,70 +1,275 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en"*>
 
 <head>
 
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"*>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"* content="width=device-width, initial-scale=1.0"*>
 
     <title>Admin Dashboard | Digital Library</title>
 
     <!-- Bootstrap -->
+
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"*
+
+        rel="stylesheet"*
+
+    >
 
     <!-- Bootstrap Icons -->
+
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet">
+
+        rel="stylesheet"*
+
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"*
+
+    >
 
     <!-- Google Font -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
 
-    <!-- Project CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link
+
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"*
+
+        rel="stylesheet"*
+
+    >
+
+    <!-- Main CSS -->
+
+    <link rel="stylesheet"* href="css/style.css"*>
+
+
+<style>
+body.admin-dashboard-page{
+    margin:0;
+    font-family:"Inter",sans-serif;
+    background:#f1f5f9;
+    color:#0f172a;
+    overflow-x:hidden;
+}
+body.admin-dashboard-page .admin-navbar{
+    background:#0f172a!important;
+    min-height:72px;
+    box-shadow:0 4px 18px rgba(15,23,42,.18);
+}
+body.admin-dashboard-page .admin-navbar .container{max-width:1176px}
+body.admin-dashboard-page .admin-navbar .navbar-brand{
+    color:#fff!important;font-size:1.35rem;font-weight:800;
+    text-decoration:none;display:flex;align-items:center;gap:7px;
+}
+body.admin-dashboard-page .admin-navbar .navbar-brand i{font-size:1.35rem}
+body.admin-dashboard-page .admin-badge{
+    display:inline-flex;align-items:center;gap:7px;padding:9px 14px;
+    border:1px solid #334155;border-radius:10px;background:#1e293b;
+    color:#cbd5e1;font-size:.85rem;font-weight:700;
+}
+body.admin-dashboard-page .logout-btn{border-radius:9px;padding:8px 15px;font-weight:700}
+
+body.admin-dashboard-page .dashboard-container{
+    max-width:1176px;margin:0 auto;padding:34px 24px 50px;
+}
+
+body.admin-dashboard-page .admin-welcome-section{
+    position:relative;overflow:hidden;min-height:230px;padding:42px 48px;
+    margin-bottom:34px;border-radius:20px;
+    background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 52%,#4c1d95 100%);
+    box-shadow:0 16px 35px rgba(15,23,42,.18);
+}
+body.admin-dashboard-page .admin-welcome-section:before{
+    content:"";position:absolute;width:260px;height:260px;right:-80px;top:-120px;
+    border-radius:50%;background:rgba(255,255,255,.08);
+}
+body.admin-dashboard-page .admin-welcome-section:after{
+    content:"";position:absolute;width:180px;height:180px;right:150px;bottom:-125px;
+    border-radius:50%;background:rgba(96,165,250,.14);
+}
+body.admin-dashboard-page .welcome-content{
+    position:relative;z-index:2;display:flex;align-items:center;
+    justify-content:space-between;min-height:145px;
+}
+body.admin-dashboard-page .welcome-label,
+body.admin-dashboard-page .section-label{
+    display:inline-flex;align-items:center;gap:7px;color:#93c5fd;
+    font-size:.78rem;font-weight:800;letter-spacing:.12em;
+}
+body.admin-dashboard-page .welcome-text h1{
+    margin:10px 0;color:#fff;font-size:clamp(2rem,4vw,2.8rem);
+    line-height:1.15;font-weight:800;
+}
+body.admin-dashboard-page .welcome-text p{
+    max-width:680px;margin:0;color:#cbd5e1;font-size:.98rem;line-height:1.7;
+}
+body.admin-dashboard-page .welcome-icon{
+    width:105px;height:105px;flex:0 0 105px;display:flex;
+    align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);
+    border-radius:28px;background:rgba(255,255,255,.09);color:#bfdbfe;font-size:3.2rem;
+}
+
+body.admin-dashboard-page .statistics-section{margin-bottom:42px}
+body.admin-dashboard-page .admin-stat-card{
+    min-height:155px;display:flex;align-items:center;gap:18px;padding:25px;
+    border:1px solid #e2e8f0;border-radius:18px;background:#fff;
+    box-shadow:0 8px 24px rgba(15,23,42,.07);
+    transition:transform .2s ease,box-shadow .2s ease;
+}
+body.admin-dashboard-page .admin-stat-card:hover{
+    transform:translateY(-3px);box-shadow:0 14px 30px rgba(15,23,42,.11);
+}
+body.admin-dashboard-page .stat-icon{
+    width:58px;height:58px;flex:0 0 58px;display:flex;
+    align-items:center;justify-content:center;border-radius:16px;font-size:1.55rem;
+}
+body.admin-dashboard-page .books-stat .stat-icon{background:#dbeafe;color:#2563eb}
+body.admin-dashboard-page .members-stat .stat-icon{background:#ede9fe;color:#7c3aed}
+body.admin-dashboard-page .issued-stat .stat-icon{background:#dcfce7;color:#16a34a}
+body.admin-dashboard-page .fines-stat .stat-icon{background:#ffedd5;color:#ea580c}
+body.admin-dashboard-page .stat-content{min-width:0}
+body.admin-dashboard-page .stat-label{
+    display:block;margin-bottom:5px;color:#64748b;font-size:.84rem;font-weight:700;
+}
+body.admin-dashboard-page .stat-content h2{
+    margin:0;color:#0f172a;font-size:2rem;line-height:1.15;font-weight:800;
+}
+body.admin-dashboard-page .stat-description{
+    display:block;margin-top:5px;color:#94a3b8;font-size:.76rem;
+}
+
+body.admin-dashboard-page .management-section,
+body.admin-dashboard-page .quick-links-section{margin-bottom:45px}
+body.admin-dashboard-page .section-heading{margin-bottom:22px}
+body.admin-dashboard-page .section-heading h2{
+    margin:7px 0 5px;color:#0f172a;font-size:1.8rem;font-weight:800;
+}
+body.admin-dashboard-page .section-heading p{
+    margin:0;color:#64748b;font-size:.94rem;
+}
+
+body.admin-dashboard-page .management-card{
+    position:relative;min-height:245px;display:block;padding:27px;overflow:hidden;
+    border:1px solid #e2e8f0;border-radius:19px;background:#fff;color:inherit;
+    text-decoration:none;box-shadow:0 8px 24px rgba(15,23,42,.06);
+    transition:transform .2s ease,box-shadow .2s ease;
+}
+body.admin-dashboard-page .management-card:hover{
+    transform:translateY(-5px);color:inherit;
+    box-shadow:0 16px 34px rgba(15,23,42,.12);
+}
+body.admin-dashboard-page .management-icon{
+    width:56px;height:56px;display:flex;align-items:center;justify-content:center;
+    margin-bottom:19px;border-radius:15px;font-size:1.5rem;
+}
+body.admin-dashboard-page .books-management .management-icon{background:#dbeafe;color:#2563eb}
+body.admin-dashboard-page .issued-management .management-icon{background:#dcfce7;color:#16a34a}
+body.admin-dashboard-page .members-management .management-icon{background:#ede9fe;color:#7c3aed}
+body.admin-dashboard-page .fines-management .management-icon{background:#ffedd5;color:#ea580c}
+body.admin-dashboard-page .queries-management .management-icon{background:#fce7f3;color:#db2777}
+body.admin-dashboard-page .bookings-management .management-icon{background:#cffafe;color:#0891b2}
+body.admin-dashboard-page .management-content h3{
+    margin:0 0 9px;color:#0f172a;font-size:1.22rem;font-weight:800;
+}
+body.admin-dashboard-page .management-content p{
+    min-height:52px;margin:0 0 18px;color:#64748b;font-size:.88rem;line-height:1.6;
+}
+body.admin-dashboard-page .management-link{
+    display:inline-flex;align-items:center;gap:7px;color:#2563eb;
+    font-size:.86rem;font-weight:800;
+}
+
+body.admin-dashboard-page .quick-links-grid{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;
+}
+body.admin-dashboard-page .quick-link-card{
+    display:flex;align-items:center;gap:15px;padding:18px 20px;
+    border:1px solid #e2e8f0;border-radius:15px;background:#fff;color:inherit;
+    text-decoration:none;box-shadow:0 6px 18px rgba(15,23,42,.05);
+    transition:transform .2s ease,box-shadow .2s ease;
+}
+body.admin-dashboard-page .quick-link-card:hover{
+    transform:translateY(-2px);color:inherit;
+    box-shadow:0 12px 25px rgba(15,23,42,.09);
+}
+body.admin-dashboard-page .quick-link-icon{
+    width:45px;height:45px;flex:0 0 45px;display:flex;
+    align-items:center;justify-content:center;border-radius:12px;
+    background:#eff6ff;color:#2563eb;font-size:1.1rem;
+}
+body.admin-dashboard-page .quick-link-card h4{
+    margin:0 0 3px;color:#0f172a;font-size:.94rem;font-weight:800;
+}
+body.admin-dashboard-page .quick-link-card span{color:#94a3b8;font-size:.78rem}
+body.admin-dashboard-page .quick-link-card>i:last-child{
+    margin-left:auto;color:#94a3b8;
+}
+
+body.admin-dashboard-page .admin-footer{
+    padding:32px 20px;background:#0f172a;color:#94a3b8;
+}
+body.admin-dashboard-page .admin-footer-content{text-align:center}
+body.admin-dashboard-page .admin-footer-brand{
+    display:inline-flex;align-items:center;gap:7px;margin-bottom:7px;
+    color:#fff;font-size:1.05rem;font-weight:800;
+}
+body.admin-dashboard-page .admin-footer p{
+    margin:0 0 6px;color:#94a3b8;font-size:.84rem;
+}
+body.admin-dashboard-page .admin-footer small{color:#64748b;font-size:.74rem}
+
+@media(max-width:767.98px){
+    body.admin-dashboard-page .admin-badge{display:none}
+    body.admin-dashboard-page .dashboard-container{padding:22px 15px 35px}
+    body.admin-dashboard-page .admin-welcome-section{padding:30px 25px}
+    body.admin-dashboard-page .welcome-content{display:block}
+    body.admin-dashboard-page .welcome-icon{display:none}
+    body.admin-dashboard-page .welcome-text h1{font-size:1.9rem}
+    body.admin-dashboard-page .quick-links-grid{grid-template-columns:1fr}
+}
+</style>
 
 </head>
 
-<body>
+<body class="admin-dashboard-page"*>
 
-```
-<!-- ================= NAVBAR ================= -->
+<!-- ========================= NAVBAR ========================= -->
 
-<nav class="navbar admin-navbar">
+<nav class="navbar navbar-expand-lg admin-navbar"*>
 
-    <div class="container">
+    <div class="container"*>
 
-        <a href="admin-dashboard.html" class="brand">
+        <a class="navbar-brand"* href="admin-dashboard.html"*>
 
-            <i class="bi bi-book-half"></i>
+            <i class="bi bi-book-half"*></i>
 
-            Digital Library
+            <span>Digital Library</span>
 
         </a>
 
+        <div class="d-flex align-items-center gap-3"*>
 
-        <div class="d-flex align-items-center gap-3">
+            <span class="admin-badge"*>
 
-            <span class="admin-badge">
-
-                <i class="bi bi-shield-lock"></i>
+                <i class="bi bi-shield-lock-fill"*></i>
 
                 Administrator
 
             </span>
 
-
             <button
-                class="logout-btn"
-                onclick="logout()">
 
-                <i class="bi bi-box-arrow-right"></i>
+                type="button"*
+
+                class="btn btn-outline-light btn-sm logout-btn"*
+
+                id="logoutBtn"*
+
+            >
+
+                <i class="bi bi-box-arrow-right"*></i>
 
                 Logout
 
@@ -77,523 +282,1326 @@
 </nav>
 
 
-<!-- ================= MAIN ================= -->
 
-<main class="dashboard-container">
+<!-- ========================= MAIN ========================= -->
 
-    <div class="container">
+<main class="dashboard-container"*>
 
+    <!-- ========================= WELCOME SECTION ========================= -->
 
-        <!-- ================= WELCOME ================= -->
+    <section class="admin-welcome-section"*>
 
-        <div>
+        <div class="welcome-content"*>
 
-            <h1 class="welcome-title">
+            <div class="welcome-text"*>
 
-                Admin Dashboard
+                <div class="welcome-label"*>
 
-            </h1>
+                    <i class="bi bi-speedometer2"*></i>
 
-            <p class="welcome-text">
-
-                Manage books, members, loans, fines and library queries from one place.
-
-            </p>
-
-        </div>
-
-
-        <!-- ================= STATISTICS ================= -->
-
-        <div class="row g-4">
-
-
-            <!-- TOTAL BOOKS -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-
-                        <i class="bi bi-book"></i>
-
-                    </div>
-
-                    <div
-                        id="totalBooks"
-                        class="stat-number">
-
-                        0
-
-                    </div>
-
-                    <div class="stat-label">
-
-                        Total Books
-
-                    </div>
+                    ADMINISTRATION
 
                 </div>
+
+                <h1>
+
+                    Welcome back, Administrator
+
+                </h1>
+
+                <p>
+
+                    Manage your digital library, members, books,
+
+                    loans and other library activities from one place.
+
+                </p>
 
             </div>
 
+            <div class="welcome-icon"*>
 
-            <!-- TOTAL MEMBERS -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-
-                        <i class="bi bi-people"></i>
-
-                    </div>
-
-                    <div
-                        id="totalMembers"
-                        class="stat-number">
-
-                        0
-
-                    </div>
-
-                    <div class="stat-label">
-
-                        Registered Members
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ISSUED BOOKS -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-
-                        <i class="bi bi-journal-check"></i>
-
-                    </div>
-
-                    <div
-                        id="issuedBooks"
-                        class="stat-number">
-
-                        0
-
-                    </div>
-
-                    <div class="stat-label">
-
-                        Issued Books
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PENDING FINES -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">
-
-                        <i class="bi bi-currency-rupee"></i>
-
-                    </div>
-
-                    <div
-                        id="pendingFines"
-                        class="stat-number">
-
-                        ₹0
-
-                    </div>
-
-                    <div class="stat-label">
-
-                        Pending Fines
-
-                    </div>
-
-                </div>
+                <i class="bi bi-building"*></i>
 
             </div>
 
         </div>
 
-
-        <!-- ================= MANAGEMENT ================= -->
-
-        <section class="dashboard-section">
-
-            <h2 class="section-title">
-
-                Library Management
-
-            </h2>
-
-            <p class="section-description">
-
-                Manage the main components of the digital library system.
-
-            </p>
+    </section>
 
 
-            <div class="row g-4">
 
+    <!-- ========================= STATISTICS ========================= -->
 
-                <!-- BOOKS -->
+    <section class="statistics-section"*>
 
-                <div class="col-12 col-md-6 col-lg-4">
+        <div class="row g-4"*>
 
-                    <a
-                        href="admin-books.html"
-                        class="action-card">
+            <!-- Total Books -->
 
-                        <div class="action-icon">
+            <div class="col-md-6 col-xl-3"*>
 
-                            <i class="bi bi-book"></i>
+                <div class="admin-stat-card books-stat"*>
 
-                        </div>
+                    <div class="stat-icon"*>
 
-                        <div class="action-title">
+                        <i class="bi bi-book-fill"*></i>
 
-                            Manage Books
+                    </div>
 
-                        </div>
+                    <div class="stat-content"*>
 
-                        <p class="action-description">
+                        <span class="stat-label"*>
 
-                            Add, edit, delete and manage book quantities.
+                            Total Books
 
-                        </p>
+                        </span>
 
-                    </a>
+                        <h2 id="totalBooks"*>
+
+                            0
+
+                        </h2>
+
+                        <span class="stat-description"*>
+
+                            Books in catalogue
+
+                        </span>
+
+                    </div>
 
                 </div>
 
+            </div>
 
-                <!-- ISSUED BOOKS -->
 
-                <div class="col-12 col-md-6 col-lg-4">
 
-                    <a
-                        href="admin-issued-books.html"
-                        class="action-card">
+            <!-- Registered Members -->
 
-                        <div class="action-icon">
+            <div class="col-md-6 col-xl-3"*>
 
-                            <i class="bi bi-journal-arrow-up"></i>
+                <div class="admin-stat-card members-stat"*>
 
-                        </div>
+                    <div class="stat-icon"*>
 
-                        <div class="action-title">
+                        <i class="bi bi-people-fill"*></i>
+
+                    </div>
+
+                    <div class="stat-content"*>
+
+                        <span class="stat-label"*>
+
+                            Registered Members
+
+                        </span>
+
+                        <h2 id="totalMembers"*>
+
+                            0
+
+                        </h2>
+
+                        <span class="stat-description"*>
+
+                            Active library members
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Issued Books -->
+
+            <div class="col-md-6 col-xl-3"*>
+
+                <div class="admin-stat-card issued-stat"*>
+
+                    <div class="stat-icon"*>
+
+                        <i class="bi bi-journal-arrow-up"*></i>
+
+                    </div>
+
+                    <div class="stat-content"*>
+
+                        <span class="stat-label"*>
 
                             Issued Books
 
-                        </div>
+                        </span>
 
-                        <p class="action-description">
+                        <h2 id="issuedBooks"*>
 
-                            View issued books, due dates and return information.
+                            0
 
-                        </p>
+                        </h2>
 
-                    </a>
+                        <span class="stat-description"*>
 
-                </div>
+                            Currently issued
 
+                        </span>
 
-                <!-- MEMBERS -->
-
-                <div class="col-12 col-md-6 col-lg-4">
-
-                    <a
-                        href="admin-users.html"
-                        class="action-card">
-
-                        <div class="action-icon">
-
-                            <i class="bi bi-people"></i>
-
-                        </div>
-
-                        <div class="action-title">
-
-                            Manage Members
-
-                        </div>
-
-                        <p class="action-description">
-
-                            View and manage registered library members.
-
-                        </p>
-
-                    </a>
-
-                </div>
-
-
-                <!-- FINES -->
-
-                <div class="col-12 col-md-6 col-lg-4">
-
-                    <a
-                        href="admin-fines.html"
-                        class="action-card">
-
-                        <div class="action-icon">
-
-                            <i class="bi bi-cash-coin"></i>
-
-                        </div>
-
-                        <div class="action-title">
-
-                            Manage Fines
-
-                        </div>
-
-                        <p class="action-description">
-
-                            View outstanding fines and mark fines as paid.
-
-                        </p>
-
-                    </a>
-
-                </div>
-
-
-                <!-- QUERIES -->
-
-                <div class="col-12 col-md-6 col-lg-4">
-
-                    <a
-                        href="admin-queries.html"
-                        class="action-card">
-
-                        <div class="action-icon">
-
-                            <i class="bi bi-chat-left-text"></i>
-
-                        </div>
-
-                        <div class="action-title">
-
-                            Member Queries
-
-                        </div>
-
-                        <p class="action-description">
-
-                            View and resolve questions submitted by members.
-
-                        </p>
-
-                    </a>
-
-                </div>
-
-
-                <!-- BOOKINGS -->
-
-                <div class="col-12 col-md-6 col-lg-4">
-
-                    <a
-                        href="admin-bookings.html"
-                        class="action-card">
-
-                        <div class="action-icon">
-
-                            <i class="bi bi-calendar-check"></i>
-
-                        </div>
-
-                        <div class="action-title">
-
-                            Advance Bookings
-
-                        </div>
-
-                        <p class="action-description">
-
-                            Monitor advance reservations for unavailable books.
-
-                        </p>
-
-                    </a>
+                    </div>
 
                 </div>
 
             </div>
 
-        </section>
 
 
-        <!-- ================= QUICK LINKS ================= -->
+            <!-- Pending Fines -->
 
-        <section class="dashboard-section">
+            <div class="col-md-6 col-xl-3"*>
 
-            <h2 class="section-title">
+                <div class="admin-stat-card fines-stat"*>
 
-                Quick Links
+                    <div class="stat-icon"*>
 
-            </h2>
+                        <i class="bi bi-currency-rupee"*></i>
 
-            <p class="section-description">
+                    </div>
 
-                Frequently used library operations.
+                    <div class="stat-content"*>
 
-            </p>
+                        <span class="stat-label"*>
+
+                            Pending Fines
+
+                        </span>
+
+                        <h2 id="pendingFines"*>
+
+                            ₹0
+
+                        </h2>
+
+                        <span class="stat-description"*>
+
+                            Outstanding amount
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 
-            <!-- BROWSE CATALOGUE -->
 
-            <a
-                href="books.html"
-                class="quick-link">
+    <!-- ========================= MANAGEMENT ========================= -->
 
-                <i class="bi bi-search"></i>
+    <section class="management-section"*>
 
-                Browse Library Catalogue
+        <div class="section-heading"*>
+
+            <div>
+
+                <span class="section-label"*>
+
+                    <i class="bi bi-grid-fill"*></i>
+
+                    LIBRARY MANAGEMENT
+
+                </span>
+
+                <h2>
+
+                    Manage Library
+
+                </h2>
+
+                <p>
+
+                    Access and manage all major library operations.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="row g-4"*>
+
+            <!-- Manage Books -->
+
+            <div class="col-md-6 col-xl-4"*>
+
+                <a
+
+                    href="admin-books.html"*
+
+                    class="management-card books-management"*
+
+                >
+
+                    <div class="management-icon"*>
+
+                        <i class="bi bi-book-fill"*></i>
+
+                    </div>
+
+                    <div class="management-content"*>
+
+                        <h3>
+
+                            Manage Books
+
+                        </h3>
+
+                        <p>
+
+                            Add, edit, delete and manage books
+
+                            in the library catalogue.
+
+                        </p>
+
+                        <span class="management-link"*>
+
+                            Open Books
+
+                            <i class="bi bi-arrow-right"*></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- Issued Books -->
+
+            <div class="col-md-6 col-xl-4"*>
+
+                <a
+
+                    href="admin-issued-books.html"*
+
+                    class="management-card issued-management"*
+
+                >
+
+                    <div class="management-icon"*>
+
+                        <i class="bi bi-journal-arrow-up"*></i>
+
+                    </div>
+
+                    <div class="management-content"*>
+
+                        <h3>
+
+                            Issued Books
+
+                        </h3>
+
+                        <p>
+
+                            View currently issued books,
+
+                            members and due dates.
+
+                        </p>
+
+                        <span class="management-link"*>
+
+                            View Issued Books
+
+                            <i class="bi bi-arrow-right"*></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- Manage Members -->
+
+            <div class="col-md-6 col-xl-4"*>
+
+                <a
+
+                    href="admin-users.html"*
+
+                    class="management-card members-management"*
+
+                >
+
+                    <div class="management-icon"*>
+
+                        <i class="bi bi-people-fill"*></i>
+
+                    </div>
+
+                    <div class="management-content"*>
+
+                        <h3>
+
+                            Manage Members
+
+                        </h3>
+
+                        <p>
+
+                            View registered users and
+
+                            manage library members.
+
+                        </p>
+
+                        <span class="management-link"*>
+
+                            View Members
+
+                            <i class="bi bi-arrow-right"*></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- Fines -->
+
+            <div class="col-md-6 col-xl-4"*>
+
+                <a
+
+                    href="admin-fines.html"*
+
+                    class="management-card fines-management"*
+
+                >
+
+                    <div class="management-icon"*>
+
+                        <i class="bi bi-cash-coin"*></i>
+
+                    </div>
+
+                    <div class="management-content"*>
+
+                        <h3>
+
+                            Manage Fines
+
+                        </h3>
+
+                        <p>
+
+                            View overdue fines and
+
+                            update payment status.
+
+                        </p>
+
+                        <span class="management-link"*>
+
+                            Manage Fines
+
+                            <i class="bi bi-arrow-right"*></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- Queries -->
+
+            <div class="col-md-6 col-xl-4"*>
+
+                <a
+
+                    href="admin-queries.html"*
+
+                    class="management-card queries-management"*
+
+                >
+
+                    <div class="management-icon"*>
+
+                        <i class="bi bi-chat-left-text-fill"*></i>
+
+                    </div>
+
+                    <div class="management-content"*>
+
+                        <h3>
+
+                            Member Queries
+
+                        </h3>
+
+                        <p>
+
+                            View and manage questions
+
+                            submitted by members.
+
+                        </p>
+
+                        <span class="management-link"*>
+
+                            View Queries
+
+                            <i class="bi bi-arrow-right"*></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- Bookings -->
+
+            <div class="col-md-6 col-xl-4"*>
+
+                <a
+
+                    href="admin-bookings.html"*
+
+                    class="management-card bookings-management"*
+
+                >
+
+                    <div class="management-icon"*>
+
+                        <i class="bi bi-calendar-check-fill"*></i>
+
+                    </div>
+
+                    <div class="management-content"*>
+
+                        <h3>
+
+                            Advance Bookings
+
+                        </h3>
+
+                        <p>
+
+                            View members waiting for
+
+                            currently unavailable books.
+
+                        </p>
+
+                        <span class="management-link"*>
+
+                            View Bookings
+
+                            <i class="bi bi-arrow-right"*></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================= QUICK LINKS ========================= -->
+
+    <section class="quick-links-section"*>
+
+        <div class="section-heading"*>
+
+            <div>
+
+                <span class="section-label"*>
+
+                    <i class="bi bi-lightning-fill"*></i>
+
+                    QUICK ACCESS
+
+                </span>
+
+                <h2>
+
+                    Quick Links
+
+                </h2>
+
+                <p>
+
+                    Frequently used library administration pages.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="quick-links-grid"*>
+
+            <a href="books.html"* class="quick-link-card"*>
+
+                <div class="quick-link-icon"*>
+
+                    <i class="bi bi-search"*></i>
+
+                </div>
+
+                <div>
+
+                    <h4>
+
+                        Browse Catalogue
+
+                    </h4>
+
+                    <span>
+
+                        View library catalogue
+
+                    </span>
+
+                </div>
+
+                <i class="bi bi-arrow-up-right"*></i>
 
             </a>
 
 
-            <!-- REGISTERED MEMBERS -->
 
-            <a
-                href="admin-users.html"
-                class="quick-link">
+            <a href="admin-books.html"* class="quick-link-card"*>
 
-                <i class="bi bi-person-lines-fill"></i>
+                <div class="quick-link-icon"*>
 
-                View Registered Members
+                    <i class="bi bi-plus-circle-fill"*></i>
 
-            </a>
+                </div>
 
+                <div>
 
-            <!-- ISSUED BOOKS -->
+                    <h4>
 
-            <a
-                href="admin-issued-books.html"
-                class="quick-link">
+                        Add New Book
 
-                <i class="bi bi-receipt"></i>
+                    </h4>
 
-                Review Issued Books
+                    <span>
 
-            </a>
+                        Add a book to catalogue
 
+                    </span>
 
-            <!-- FINES -->
+                </div>
 
-            <a
-                href="admin-fines.html"
-                class="quick-link">
-
-                <i class="bi bi-cash-coin"></i>
-
-                Review Fines
+                <i class="bi bi-arrow-up-right"*></i>
 
             </a>
 
 
-            <!-- MEMBER QUERIES -->
 
-            <a
-                href="admin-queries.html"
-                class="quick-link">
+            <a href="admin-users.html"* class="quick-link-card"*>
 
-                <i class="bi bi-chat-dots"></i>
+                <div class="quick-link-icon"*>
 
-                View Member Queries
+                    <i class="bi bi-person-lines-fill"*></i>
+
+                </div>
+
+                <div>
+
+                    <h4>
+
+                        Members
+
+                    </h4>
+
+                    <span>
+
+                        View registered members
+
+                    </span>
+
+                </div>
+
+                <i class="bi bi-arrow-up-right"*></i>
 
             </a>
 
 
-            <!-- ADVANCE BOOKINGS -->
 
-            <a
-                href="admin-bookings.html"
-                class="quick-link">
+            <a href="admin-queries.html"* class="quick-link-card"*>
 
-                <i class="bi bi-calendar-check"></i>
+                <div class="quick-link-icon"*>
 
-                View Advance Bookings
+                    <i class="bi bi-envelope-fill"*></i>
+
+                </div>
+
+                <div>
+
+                    <h4>
+
+                        Member Queries
+
+                    </h4>
+
+                    <span>
+
+                        Check submitted queries
+
+                    </span>
+
+                </div>
+
+                <i class="bi bi-arrow-up-right"*></i>
 
             </a>
 
-        </section>
+        </div>
 
-    </div>
+    </section>
 
 </main>
 
 
-<!-- ================= FOOTER ================= -->
 
-<footer class="admin-footer">
+<!-- ========================= FOOTER ========================= -->
 
-    <div class="container">
+<footer class="admin-footer"*>
 
-        <strong>
+    <div class="container"*>
 
-            Digital Library Management System
+        <div class="admin-footer-content"*>
 
-        </strong>
+            <div class="admin-footer-brand"*>
 
-        <br>
+                <i class="bi bi-book-half"*></i>
 
-        © 2026 Digital Library. All rights reserved.
+                <span>
+
+                    Digital Library
+
+                </span>
+
+            </div>
+
+            <p>
+
+                Smart digital library management.
+
+            </p>
+
+            <small>
+
+                © 2026 Digital Library. All rights reserved.
+
+            </small>
+
+        </div>
 
     </div>
 
 </footer>
 
 
-<!-- ================= JAVASCRIPT ================= -->
+
+<!-- ========================= BOOTSTRAP JS ========================= -->
+
+<script
+
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"*>
+
+</script>
+
+
+
+<!-- ========================= DASHBOARD JAVASCRIPT ========================= -->
 
 <script>
 
-    function logout() {
+const API_BASE_URL = "http://localhost:8080";
 
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        localStorage.removeItem("userName");
-        localStorage.removeItem("userEmail");
 
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("role");
-        sessionStorage.removeItem("userName");
-        sessionStorage.removeItem("userEmail");
 
-        window.location.href = "login.html";
+// ======================================================
+
+// GET JWT TOKEN
+
+// ======================================================
+
+function getToken() {
+
+    return (
+
+        localStorage.getItem("token") ||
+
+        sessionStorage.getItem("token")
+
+    );
+
+}
+
+
+
+// ======================================================
+
+// FETCH WITH AUTHORIZATION
+
+// ======================================================
+
+async function fetchWithAuth(url) {
+
+    const token = getToken();
+
+    if (!token) {
+
+        throw new Error("Authentication token not found.");
+
     }
 
+    const response = await fetch(url, {
+
+        method: "GET",
+
+        headers: {
+
+            "Authorization": "Bearer " + token,
+
+            "Content-Type": "application/json"
+
+        }
+
+    });
+
+    if (response.status === 401) {
+
+        throw new Error("Unauthorized. Please login again.");
+
+    }
+
+    if (response.status === 403) {
+
+        throw new Error("You are not authorized to access this data.");
+
+    }
+
+    if (!response.ok) {
+
+        throw new Error(
+
+            "Request failed with status " + response.status
+
+        );
+
+    }
+
+    return await response.json();
+
+}
+
+
+
+// ======================================================
+
+// LOAD TOTAL BOOKS
+
+// ======================================================
+
+async function loadTotalBooks() {
+
+    try {
+
+        const books = await fetchWithAuth(
+
+            API_BASE_URL + "/api/books"
+
+        );
+
+        const totalBooksElement =
+
+            document.getElementById("totalBooks");
+
+        if (Array.isArray(books)) {
+
+            totalBooksElement.textContent = books.length;
+
+        } else {
+
+            totalBooksElement.textContent = "0";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+
+            "Error loading total books:",
+
+            error
+
+        );
+
+        document.getElementById("totalBooks").textContent = "0";
+
+    }
+
+}
+
+
+
+// ======================================================
+
+// LOAD REGISTERED MEMBERS
+
+// ======================================================
+
+async function loadTotalMembers() {
+
+    try {
+
+        const users = await fetchWithAuth(
+
+            API_BASE_URL + "/api/admin/users"
+
+        );
+
+        const totalMembersElement =
+
+            document.getElementById("totalMembers");
+
+        if (Array.isArray(users)) {
+
+            /*
+
+             * Count only USER role.
+
+             * ADMIN is not counted as a registered member.
+
+             */
+
+            const members = users.filter(function(user) {
+
+                return (
+
+                    user.role &&
+
+                    user.role.toUpperCase() === "USER"
+
+                );
+
+            });
+
+            totalMembersElement.textContent =
+
+                members.length;
+
+        } else {
+
+            totalMembersElement.textContent = "0";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+
+            "Error loading registered members:",
+
+            error
+
+        );
+
+        document.getElementById("totalMembers").textContent = "0";
+
+    }
+
+}
+
+
+
+// ======================================================
+
+// LOAD CURRENTLY ISSUED BOOKS
+
+// ======================================================
+
+async function loadIssuedBooks() {
+
+    try {
+
+        /*
+
+         * IMPORTANT:
+
+         *
+
+         * The working Admin Issued Books page uses:
+
+         *
+
+         * /api/loans/issued
+
+         *
+
+         * NOT:
+
+         *
+
+         * /api/admin/loans/issued
+
+         */
+
+        const issuedBooks = await fetchWithAuth(
+
+            API_BASE_URL + "/api/loans/issued"
+
+        );
+
+        const issuedBooksElement =
+
+            document.getElementById("issuedBooks");
+
+        if (Array.isArray(issuedBooks)) {
+
+            issuedBooksElement.textContent =
+
+                issuedBooks.length;
+
+        } else {
+
+            issuedBooksElement.textContent = "0";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+
+            "Error loading issued books:",
+
+            error
+
+        );
+
+        document.getElementById("issuedBooks").textContent = "0";
+
+    }
+
+}
+
+
+
+// ======================================================
+
+// LOAD PENDING FINES
+
+// ======================================================
+
+async function loadPendingFines() {
+
+    try {
+
+        /*
+
+         * The dashboard uses the admin fines endpoint.
+
+         *
+
+         * If your admin-fines.js uses a different endpoint,
+
+         * we will change ONLY this section after checking
+
+         * that working file.
+
+         */
+
+        const fines = await fetchWithAuth(
+
+            API_BASE_URL + "/api/admin/loans/fines"
+
+        );
+
+        const pendingFinesElement =
+
+            document.getElementById("pendingFines");
+
+        if (!Array.isArray(fines)) {
+
+            pendingFinesElement.textContent = "₹0";
+
+            return;
+
+        }
+
+
+
+        let totalPendingFine = 0;
+
+
+
+        fines.forEach(function(fine) {
+
+            /*
+
+             * Fine amount can come as:
+
+             *
+
+             * fineAmount
+
+             * or
+
+             * amount
+
+             */
+
+            let amount = 0;
+
+            if (fine.fineAmount !== undefined &&
+
+                fine.fineAmount !== null) {
+
+                amount = Number(fine.fineAmount);
+
+            } else if (
+
+                fine.amount !== undefined &&
+
+                fine.amount !== null
+
+            ) {
+
+                amount = Number(fine.amount);
+
+            }
+
+
+
+            /*
+
+             * Count only unpaid fines.
+
+             */
+
+            const isPaid =
+
+                fine.finePaid === true ||
+
+                fine.paid === true;
+
+
+
+            if (!isPaid && !isNaN(amount)) {
+
+                totalPendingFine += amount;
+
+            }
+
+        });
+
+
+
+        pendingFinesElement.textContent =
+
+            "₹" + totalPendingFine.toFixed(2);
+
+    } catch (error) {
+
+        console.error(
+
+            "Error loading pending fines:",
+
+            error
+
+        );
+
+        /*
+
+         * Do not break the dashboard if the fine
+
+         * endpoint is unavailable.
+
+         */
+
+        document.getElementById(
+
+            "pendingFines"
+
+        ).textContent = "₹0";
+
+    }
+
+}
+
+
+
+// ======================================================
+
+// LOAD ALL DASHBOARD STATISTICS
+
+// ======================================================
+
+async function loadDashboardStats() {
+
+    const token = getToken();
+
+
+
+    // ----------------------------------------------
+
+    // Check login
+
+    // ----------------------------------------------
+
+    if (!token) {
+
+        console.warn(
+
+            "No authentication token found."
+
+        );
+
+        window.location.href = "login.html";
+
+        return;
+
+    }
+
+
+
+    // ----------------------------------------------
+
+    // Load all dashboard data
+
+    // ----------------------------------------------
+
+    await Promise.all([
+
+        loadTotalBooks(),
+
+        loadTotalMembers(),
+
+        loadIssuedBooks(),
+
+        loadPendingFines()
+
+    ]);
+
+}
+
+
+
+// ======================================================
+
+// LOGOUT
+
+// ======================================================
+
+function logout() {
+
+    localStorage.removeItem("token");
+
+    sessionStorage.removeItem("token");
+
+    /*
+
+     * Remove any other authentication-related
+
+     * values if your frontend stores them.
+
+     */
+
+    localStorage.removeItem("role");
+
+    sessionStorage.removeItem("role");
+
+    localStorage.removeItem("user");
+
+    sessionStorage.removeItem("user");
+
+    window.location.href = "login.html";
+
+}
+
+
+
+// ======================================================
+
+// PAGE LOAD
+
+// ======================================================
+
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    function() {
+
+        loadDashboardStats();
+
+
+
+        const logoutButton =
+
+            document.getElementById("logoutBtn");
+
+
+
+        if (logoutButton) {
+
+            logoutButton.addEventListener(
+
+                "click",
+
+                logout
+
+            );
+
+        }
+
+    }
+
+);
+
 </script>
-
-
-<!-- Bootstrap JS -->
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
-```
 
 </body>
 

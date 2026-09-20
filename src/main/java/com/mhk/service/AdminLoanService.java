@@ -1,5 +1,8 @@
 package com.mhk.service;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.mhk.entity.Loan;
@@ -29,6 +32,7 @@ public class AdminLoanService {
         }
 
         if (loan.isFinePaid()) {
+
             throw new RuntimeException(
                     "Fine is already marked as paid");
         }
@@ -36,5 +40,9 @@ public class AdminLoanService {
         loan.setFinePaid(true);
 
         return loanRepository.save(loan);
+    }
+
+    public List<Loan> getLoansWithFines() {
+        return loanRepository.findByFineAmountGreaterThan(BigDecimal.ZERO);
     }
 }

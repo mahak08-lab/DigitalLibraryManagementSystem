@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://digitallibrarymanagementsystem-production-a092.up.railway.app";
+const API_BASE_URL = "http://localhost:8080";
 
 document.addEventListener("DOMContentLoaded", function () {
     loadMembers();
